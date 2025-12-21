@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Together</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="login-screen">
+  <h1>Private</h1>
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="checkPassword()">Enter</button>
+  <p id="error"></p>
+</div>
+
+<div id="main-content" class="hidden">
+
+  <div class="since">❤ Since January 22, 2025</div>
+
+  <div class="circle">
+    <div class="text">
+      <div class="small">Together</div>
+      <div id="days" class="big">0</div>
+      <div class="small">DAYS</div>
+    </div>
+  </div>
+
+  <div class="quote">
+    "I love you not because of who you are, but because of who I am when I am with you."
+  </div>
+
+  <div class="time-row">
+    <div><span id="months">0</span><br>Months</div>
+    <div><span id="extraDays">0</span><br>Days</div>
+    <div><span id="hours">0</span><br>Hours</div>
+    <div><span id="minutes">0</span><br>Minutes</div>
+    <div><span id="seconds">0</span><br>Seconds</div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

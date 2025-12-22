@@ -88,3 +88,54 @@ body {
 .time-row span {
   font-weight: bold;
 }
+
+/* -------------------------------
+   DAILY FEELINGS BOARD (NEW)
+-------------------------------- */
+
+.feelings-card {
+  background: #ff9bb5;
+  margin: 30px;
+  padding: 20px;
+  border-radius: 25px;
+}
+
+.feelings-card h2 {
+  margin-bottom: 15px;
+}
+
+.feelings-card label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.feelings-card input[type="range"] {
+  width: 100%;
+}
+
+.feelings-card span {
+  display: block;
+  margin-top: 5px;
+}
+
+.feelings-card textarea {
+  width: 100%;
+  height: 60px;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  resize: none;
+}
+
+.feelings-card button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background: #ff5c8a;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}

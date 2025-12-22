@@ -39,26 +39,62 @@
     <div><span id="seconds">0</span><br>Seconds</div>
   </div>
 
-  <!-- DAILY FEELINGS BOARD (NEW PART) -->
-  <div class="feelings-card">
+  <!-- DAILY FEELINGS BOARD -->
+  <div class="feelings-board">
+
     <h2>Today</h2>
 
-    <label>Loved</label>
-    <input type="range" min="0" max="10" id="loved">
-    <span id="lovedValue">5</span>
+    <div class="columns">
 
-    <label>Energy</label>
-    <input type="range" min="0" max="10" id="energy">
-    <span id="energyValue">5</span>
+      <!-- YOU -->
+      <div class="person">
+        <h3>You</h3>
 
-    <label>Busy</label>
-    <input type="range" min="0" max="10" id="busy">
-    <span id="busyValue">5</span>
+        <label>Loved</label>
+        <input type="range" min="0" max="10" value="5" class="slider" id="you-loved">
+        <span id="you-loved-val">5</span>
 
-    <textarea id="note" placeholder="Anything you want to say today..."></textarea>
+        <label>Energy</label>
+        <input type="range" min="0" max="10" value="5" class="slider" id="you-energy">
+        <span id="you-energy-val">5</span>
 
-    <button onclick="saveFeelings()">Save</button>
+        <label>Busy</label>
+        <input type="range" min="0" max="10" value="5" class="slider" id="you-busy">
+        <span id="you-busy-val">5</span>
+
+        <textarea id="you-note" placeholder="Say something to her..."></textarea>
+      </div>
+
+      <!-- HER -->
+      <div class="person">
+        <h3>Her</h3>
+
+        <label>Loved</label>
+        <input type="range" min="0" max="10" value="5" class="slider" id="her-loved">
+        <span id="her-loved-val">5</span>
+
+        <label>Energy</label>
+        <input type="range" min="0" max="10" value="5" class="slider" id="her-energy">
+        <span id="her-energy-val">5</span>
+
+        <label>Busy</label>
+        <input type="range" min="0" max="10" value="5" class="slider" id="her-busy">
+        <span id="her-busy-val">5</span>
+
+        <textarea id="her-note" placeholder="Her words to you..."></textarea>
+      </div>
+
+    </div>
+
+    <div class="heart-container">
+      <div class="heart" id="heart"></div>
+    </div>
+
+    <button class="save-btn" onclick="saveFeelings()">Save Today</button>
     <p id="status"></p>
+
+    <p class="reminder">Come back tomorrow ♥</p>
+
   </div>
 
 </div>

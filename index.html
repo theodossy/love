@@ -39,7 +39,33 @@
     <div><span id="seconds">0</span><br>Seconds</div>
   </div>
 
+  <!-- DAILY FEELINGS BOARD (NEW PART) -->
+  <div class="feelings-card">
+    <h2>Today</h2>
+
+    <label>Loved</label>
+    <input type="range" min="0" max="10" id="loved">
+    <span id="lovedValue">5</span>
+
+    <label>Energy</label>
+    <input type="range" min="0" max="10" id="energy">
+    <span id="energyValue">5</span>
+
+    <label>Busy</label>
+    <input type="range" min="0" max="10" id="busy">
+    <span id="busyValue">5</span>
+
+    <textarea id="note" placeholder="Anything you want to say today..."></textarea>
+
+    <button onclick="saveFeelings()">Save</button>
+    <p id="status"></p>
+  </div>
+
 </div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script src="script.js"></script>
 </body>

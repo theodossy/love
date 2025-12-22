@@ -63,6 +63,9 @@
         <span id="you-busy-val">5</span>
 
         <textarea id="you-note" placeholder="Say something to her..."></textarea>
+<button class="save-btn" onclick="saveYou()">Save Yours</button>
+<p id="you-status"></p>
+
       </div>
 
       <!-- HER -->
@@ -81,7 +84,10 @@
         <input type="range" min="0" max="10" value="5" class="slider" id="her-busy">
         <span id="her-busy-val">5</span>
 
-        <textarea id="her-note" placeholder="Her words to you..."></textarea>
+       <textarea id="her-note" placeholder="Her words to you..."></textarea>
+<button class="save-btn" onclick="saveHer()">Save Hers</button>
+<p id="her-status"></p>
+
       </div>
 
     </div>
@@ -90,8 +96,7 @@
       <div class="heart" id="heart"></div>
     </div>
 
-    <button class="save-btn" onclick="saveFeelings()">Save Today</button>
-    <p id="status"></p>
+  
 
     <p class="reminder">Come back tomorrow ♥</p>
 
@@ -106,3 +111,4 @@
 <script src="script.js"></script>
 </body>
 </html>
+

@@ -141,14 +141,47 @@ body {
 
 .slider {
   width: 100%;
-  -webkit-appearance: none;
-  appearance: none;
   height: 10px;
   border-radius: 10px;
   background: #ff5c8a;
   outline: none;
   margin-top: 10px;
+  cursor: pointer;
+
+  -webkit-appearance: none;
+  appearance: none;
 }
+
+/* Chrome, Safari */
+.slider::-webkit-slider-runnable-track {
+  height: 10px;
+  background: #ff5c8a;
+  border-radius: 10px;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  background: #b00040;
+  border-radius: 50%;
+  margin-top: -6px;
+}
+
+/* Firefox */
+.slider::-moz-range-track {
+  height: 10px;
+  background: #ff5c8a;
+  border-radius: 10px;
+}
+
+.slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  background: #b00040;
+  border-radius: 50%;
+}
+
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -248,3 +281,4 @@ body {
   font-style: italic;
   font-size: 16px;
 }
+

@@ -157,7 +157,9 @@ function loadToday(uid) {
         document.getElementById("p-loved").innerText = data[partnerId].loved;
         document.getElementById("p-energy").innerText = data[partnerId].energy;
         document.getElementById("p-busy").innerText = data[partnerId].busy;
-        document.getElementById("p-note").innerText = data[partnerId].note || "";
+      document.getElementById("p-note").innerText =
+  data[partnerId].note ? `“${data[partnerId].note}”` : "";
+
       }
 
       updateCompatibility(data);
@@ -225,4 +227,5 @@ function drawParticles() {
 }
 
 drawParticles();
+
 

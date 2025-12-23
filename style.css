@@ -324,6 +324,73 @@ textarea::placeholder {
   z-index: -1;
   opacity: 0.15;
 }
+/* =========================
+   NIGHT MODE TEXT FIXES
+========================= */
+
+/* General readable text inside cards */
+body.night .since,
+body.night .circle,
+body.night .time-row,
+body.night .feelings-board,
+body.night .partner-card {
+  color: #ffd6e0; /* same family as bg, but brighter */
+}
+
+/* Strong headings */
+body.night h1,
+body.night h2,
+body.night .text .big,
+body.night .text .small {
+  color: #ffe3ec;
+}
+
+/* Sliders & values */
+body.night .feelings-board span,
+body.night label {
+  color: #ffd6e0;
+}
+
+/* Textarea */
+body.night textarea {
+  background: #2b0015;
+  color: #ffe3ec;
+}
+
+body.night textarea::placeholder {
+  color: #ff9bb5;
+}
+
+/* Partner stats */
+body.night .partner-stat {
+  color: #ffe3ec;
+}
+
+/* Partner note */
+body.night .partner-note {
+  background: rgba(255, 255, 255, 0.05);
+  border-left-color: #ff9bb5;
+  color: #ffe3ec;
+}
+
+/* Compatibility states — night-safe */
+body.night .compatibility.good {
+  color: #81c784;
+}
+
+body.night .compatibility.ok {
+  color: #ffb74d;
+}
+
+body.night .compatibility.bad {
+  color: #ef5350;
+}
+
+/* Muted helper text */
+body.night .silent {
+  color: rgba(255, 255, 255, 0.6);
+}
+
 
 
 

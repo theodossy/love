@@ -10,11 +10,6 @@ body {
   text-align: center;
 }
 
-/* NIGHT MODE */
-body.night {
-  background: linear-gradient(180deg, #2b0015, #1a000c);
-  color: #ff9bb5;
-}
 
 .hidden {
   display: none;
@@ -389,6 +384,94 @@ body.night .compatibility.bad {
 /* Muted helper text */
 body.night .silent {
   color: rgba(255, 255, 255, 0.6);
+}
+
+/* =========================
+   NIGHT MODE – PURPLE THEME
+========================= */
+
+body.night {
+  background: #24215d;
+  color: #f3f2ff;
+}
+
+/* ALL BLOCKS */
+body.night .since,
+body.night .circle,
+body.night .time-row,
+body.night .feelings-board,
+body.night .partner-card {
+  background: #7672c1;
+  color: #ffffff;
+}
+
+/* Circle glow softer */
+body.night .circle {
+  box-shadow: 0 0 35px rgba(118, 114, 193, 0.7);
+}
+
+/* Headings */
+body.night h1,
+body.night h2,
+body.night .text .big,
+body.night .text .small {
+  color: #ffffff;
+}
+
+/* Slider labels + values */
+body.night label,
+body.night .feelings-board span {
+  color: #ffffff;
+}
+
+/* TEXTAREA */
+body.night textarea {
+  background: #5f5bb0;
+  color: #ffffff;
+}
+
+body.night textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* PARTNER NOTE */
+body.night .partner-note {
+  background: rgba(36, 33, 93, 0.5);
+  border-left: 4px solid #ffffff;
+  color: #ffffff;
+}
+
+/* -------------------------
+   COMPATIBILITY STATES
+------------------------- */
+body.night .compatibility {
+  text-shadow: none;
+}
+
+/* PERFECT */
+body.night .compatibility.good {
+  color: #b6f2c2;
+}
+
+/* OK */
+body.night .compatibility.ok {
+  color: #ffe29a;
+}
+
+/* ONE OF YOU NEEDS CARE */
+body.night .compatibility.bad {
+  color: #7672c1; /* EXACTLY as requested */
+  font-weight: 900;
+}
+
+/* Silent helper text */
+body.night .silent {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Particles visibility */
+body.night #particles {
+  opacity: 0.25;
 }
 
 

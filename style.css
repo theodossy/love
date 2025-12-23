@@ -4,11 +4,12 @@
 
 body {
   margin: 0;
-  font-family: "Arial", sans-serif;
+  font-family: "Faculty Glyphic", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: linear-gradient(180deg, #ffd6e0, #ffc0cf);
   color: #b00040;
   text-align: center;
 }
+
 
 
 .hidden {
@@ -617,6 +618,7 @@ body.night textarea::placeholder {
 body.night #particles {
   opacity: 0.35;
 }
+
 
 
 

@@ -129,24 +129,37 @@ body.night {
 /* -------------------
    COMPATIBILITY
 ------------------- */
-.compatibility {
-  font-size: 26px;
-  font-weight: bold;
-  margin: 20px 0;
-  transition: color 0.4s ease;
+function updateCompatibility(data) {
+  const vals = Object.values(data);
+
+  compatibility.className = "compatibility";
+
+  if (vals.length < 2) {
+    compatibility.innerText = "";
+    silent.innerText = "One heart is still waiting";
+    return;
+  }
+
+  silent.innerText = "";
+
+  const loveDiff = Math.abs(vals[0].loved - vals[1].loved);
+  const energyDiff = Math.abs(vals[0].energy - vals[1].energy);
+  const busyDiff = Math.abs(vals[0].busy - vals[1].busy);
+
+  const score = loveDiff * 1.5 + energyDiff + busyDiff;
+
+  if (score <= 3) {
+    compatibility.innerText = "Perfectly in sync";
+    compatibility.classList.add("good");
+  } else if (score <= 7) {
+    compatibility.innerText = "Doing okay, stay close";
+    compatibility.classList.add("ok");
+  } else {
+    compatibility.innerText = "One of you needs care";
+    compatibility.classList.add("bad");
+  }
 }
 
-.compatibility.good {
-  color: #b00040;
-}
-
-.compatibility.ok {
-  color: #7a002b;
-}
-
-.compatibility.bad {
-  color: #ff0033;
-}
 
 
 /* -------------------
@@ -296,5 +309,6 @@ textarea::placeholder {
   z-index: -1;
   opacity: 0.15;
 }
+
 
 

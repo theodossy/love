@@ -178,3 +178,36 @@ if (new Date().getHours() >= 22) {
   document.body.classList.add("night");
 }
 
+/* -------------------
+   PARTNER CARD
+------------------- */
+.partner-card {
+  background: #ff9bb5;
+  padding: 25px;
+  border-radius: 30px;
+  margin-top: 25px;
+  transition: all 0.5s ease;
+}
+
+.partner-card h2 {
+  margin-bottom: 15px;
+}
+
+.partner-card.blurred {
+  filter: blur(6px);
+  opacity: 0.6;
+}
+
+.partner-card.blurred * {
+  pointer-events: none;
+}
+
+.partner-note {
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.hidden {
+  display: none;
+}
+

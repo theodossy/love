@@ -475,6 +475,147 @@ body.night #particles {
 }
 
 
+/* =========================
+   GOLD ACCENT OVERRIDES
+========================= */
+
+:root {
+  --gold: #cfb05b;
+}
+
+/* GLOBAL TEXT ACCENT */
+body,
+label,
+span,
+p {
+  color: inherit;
+}
+
+/* -------------------------
+   BUTTONS
+------------------------- */
+button {
+  background: var(--gold) !important;
+  color: #24215d !important;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 12px rgba(207, 176, 91, 0.5);
+}
+
+button:hover {
+  box-shadow: 0 0 20px rgba(207, 176, 91, 0.8);
+}
+
+/* -------------------------
+   HEART (GOLD)
+------------------------- */
+.heart,
+.heart::before,
+.heart::after {
+  background: var(--gold);
+}
+
+.heart {
+  box-shadow: 0 0 35px rgba(207, 176, 91, 0.9);
+}
+
+/* -------------------------
+   SLIDERS
+------------------------- */
+.slider {
+  accent-color: var(--gold);
+}
+
+/* -------------------------
+   CIRCLE GLOW
+------------------------- */
+.circle {
+  box-shadow: 0 0 45px rgba(207, 176, 91, 0.6);
+}
+
+/* -------------------------
+   TIME ROW NUMBERS
+------------------------- */
+.time-row span {
+  color: #24215d;
+}
+
+/* -------------------------
+   PARTNER NOTE DECORATION
+------------------------- */
+.partner-note {
+  border-left: 4px solid var(--gold);
+}
+
+/* -------------------------
+   COMPATIBILITY GOLD DETAIL
+------------------------- */
+.compatibility::after {
+  content: " ✦";
+  color: var(--gold);
+}
+
+/* =========================
+   NIGHT MODE – GOLD EDITION
+========================= */
+
+body.night {
+  background: #24215d;
+  color: #ffffff;
+}
+
+/* ALL BLOCKS */
+body.night .since,
+body.night .circle,
+body.night .time-row,
+body.night .feelings-board,
+body.night .partner-card {
+  background: #7672c1;
+  color: #ffffff;
+}
+
+/* GOLD HIGHLIGHTS */
+body.night .since,
+body.night h2,
+body.night .text .big {
+  text-shadow: 0 0 10px rgba(207, 176, 91, 0.6);
+}
+
+/* COMPATIBILITY STATES */
+body.night .compatibility.good {
+  color: #e7ffbe;
+}
+
+body.night .compatibility.ok {
+  color: #ffe8a3;
+}
+
+body.night .compatibility.bad {
+  color: var(--gold);
+  font-weight: 900;
+}
+
+/* PARTNER NOTE */
+body.night .partner-note {
+  background: rgba(36, 33, 93, 0.55);
+  color: #ffffff;
+}
+
+/* TEXTAREA */
+body.night textarea {
+  background: #5f5bb0;
+  color: #ffffff;
+}
+
+body.night textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* PARTICLES */
+body.night #particles {
+  opacity: 0.35;
+}
+
 
 
 

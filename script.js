@@ -37,13 +37,21 @@ const silent = document.getElementById("silent");
 const resetTimer = document.getElementById("reset-timer");
 const partnerTimer = document.getElementById("partner-timer");
 
+// PARTNER DOM
+const partnerCard = document.getElementById("partner-card");
+const partnerWait = document.getElementById("partner-wait");
+const partnerData = document.getElementById("partner-data");
+const pLoved = document.getElementById("p-loved");
+const pEnergy = document.getElementById("p-energy");
+const pBusy = document.getElementById("p-busy");
+const pNote = document.getElementById("p-note");
+
 // DATE
 const startDate = new Date(2025, 0, 22);
 
 // AUTH
 document.getElementById("loginBtn").onclick = () => {
-  auth
-    .signInWithEmailAndPassword(email.value, password.value)
+  auth.signInWithEmailAndPassword(email.value, password.value)
     .catch(e => loginError.innerText = e.message);
 };
 
@@ -95,17 +103,13 @@ function timeUntilMidnight() {
   resetTimer.innerText = `Resets in ${h}h ${m}m ${s}s`;
 }
 
-// PARTNER TIME
+// TIME SINCE
 function timeSince(timestamp) {
   if (!timestamp) return "";
   const diff = new Date() - timestamp.toDate();
-
   const h = Math.floor(diff / 3600000);
   const m = Math.floor(diff / 60000) % 60;
-
-  return h > 0
-    ? `Uploaded ${h}h ${m}m ago`
-    : `Uploaded ${m}m ago`;
+  return h > 0 ? `Uploaded ${h}h ${m}m ago` : `Uploaded ${m}m ago`;
 }
 
 // APP
@@ -152,7 +156,7 @@ document.getElementById("saveBtn").onclick = async () => {
   saveStatus.innerText = "Saved ❤";
 };
 
-// LOAD
+// LOAD + PARTNER FIX
 function loadToday(uid) {
   const today = new Date().toISOString().split("T")[0];
 
@@ -174,7 +178,16 @@ function loadToday(uid) {
     }
 
     const partnerId = users.find(id => id !== uid);
+
     if (partnerId && data[partnerId]) {
+      partnerCard.classList.remove("blurred");
+      partnerWait.classList.add("hidden");
+      partnerData.classList.remove("hidden");
+
+      pLoved.innerText = data[partnerId].loved;
+      pEnergy.innerText = data[partnerId].energy;
+      pBusy.innerText = data[partnerId].busy;
+      pNote.innerText = data[partnerId].note ? `“${data[partnerId].note}”` : "";
       partnerTimer.innerText = timeSince(data[partnerId].time);
     }
 
@@ -216,3 +229,41 @@ function updateHeart() {
 if (new Date().getHours() >= 22) {
   document.body.classList.add("night");
 }
+
+/* ------------------------
+   PARTICLES (FIXED)
+------------------------ */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+const particles = Array.from({ length: 40 }, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  r: Math.random() * 2 + 1,
+  dy: Math.random() * 0.3 + 0.1
+}));
+
+function drawParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(255,92,138,0.8)";
+
+  particles.forEach(p => {
+    p.y += p.dy;
+    if (p.y > canvas.height) p.y = 0;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  requestAnimationFrame(drawParticles);
+}
+
+drawParticles();

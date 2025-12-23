@@ -34,15 +34,18 @@ const heart = document.getElementById("heart");
 const compatibility = document.getElementById("compatibility");
 const silent = document.getElementById("silent");
 
-// DATE (correct)
+const resetTimer = document.getElementById("reset-timer");
+const partnerTimer = document.getElementById("partner-timer");
+
+// DATE
 const startDate = new Date(2025, 0, 22);
 
 // AUTH
 document.getElementById("loginBtn").onclick = () => {
-  auth.signInWithEmailAndPassword(email.value, password.value)
+  auth
+    .signInWithEmailAndPassword(email.value, password.value)
     .catch(e => loginError.innerText = e.message);
 };
-
 
 auth.onAuthStateChanged(user => {
   if (!user) return;
@@ -69,6 +72,7 @@ function updateCounter() {
   }
 
   const diff = now - startDate;
+
   yearsEl.innerText = y;
   monthsEl.innerText = m;
   daysEl.innerText = d;
@@ -77,10 +81,39 @@ function updateCounter() {
   secondsEl.innerText = Math.floor(diff / 1000) % 60;
 }
 
+// RESET TIMER
+function timeUntilMidnight() {
+  const now = new Date();
+  const midnight = new Date();
+  midnight.setHours(24, 0, 0, 0);
+
+  const diff = midnight - now;
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor(diff / 60000) % 60;
+  const s = Math.floor(diff / 1000) % 60;
+
+  resetTimer.innerText = `Resets in ${h}h ${m}m ${s}s`;
+}
+
+// PARTNER TIME
+function timeSince(timestamp) {
+  if (!timestamp) return "";
+  const diff = new Date() - timestamp.toDate();
+
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor(diff / 60000) % 60;
+
+  return h > 0
+    ? `Uploaded ${h}h ${m}m ago`
+    : `Uploaded ${m}m ago`;
+}
+
 // APP
 function startApp(uid) {
   updateCounter();
+  timeUntilMidnight();
   setInterval(updateCounter, 1000);
+  setInterval(timeUntilMidnight, 1000);
   setupSliders();
   loadToday(uid);
 }
@@ -123,53 +156,36 @@ document.getElementById("saveBtn").onclick = async () => {
 function loadToday(uid) {
   const today = new Date().toISOString().split("T")[0];
 
-  db.collection("days").doc(today)
-    .onSnapshot(doc => {
-      if (!doc.exists) return;
+  db.collection("days").doc(today).onSnapshot(doc => {
+    if (!doc.exists) return;
 
-      const data = doc.data();
-      const users = Object.keys(data);
+    const data = doc.data();
+    const users = Object.keys(data);
 
-      // ---- YOUR DATA ----
-      if (data[uid]) {
-        loved.value = data[uid].loved;
-        energy.value = data[uid].energy;
-        busy.value = data[uid].busy;
-        note.value = data[uid].note;
+    if (data[uid]) {
+      loved.value = data[uid].loved;
+      energy.value = data[uid].energy;
+      busy.value = data[uid].busy;
+      note.value = data[uid].note;
 
-        document.getElementById("loved-val").innerText = loved.value;
-        document.getElementById("energy-val").innerText = energy.value;
-        document.getElementById("busy-val").innerText = busy.value;
-      }
+      document.getElementById("loved-val").innerText = loved.value;
+      document.getElementById("energy-val").innerText = energy.value;
+      document.getElementById("busy-val").innerText = busy.value;
+    }
 
-      // ---- PARTNER DATA ----
-      const partnerId = users.find(id => id !== uid);
+    const partnerId = users.find(id => id !== uid);
+    if (partnerId && data[partnerId]) {
+      partnerTimer.innerText = timeSince(data[partnerId].time);
+    }
 
-      if (partnerId && data[partnerId]) {
-        document.getElementById("partner-card").classList.remove("blurred");
-        document.getElementById("partner-wait").classList.add("hidden");
-        document.getElementById("partner-data").classList.remove("hidden");
-
-        document.getElementById("p-loved").innerText = data[partnerId].loved;
-        document.getElementById("p-energy").innerText = data[partnerId].energy;
-        document.getElementById("p-busy").innerText = data[partnerId].busy;
-      document.getElementById("p-note").innerText =
-  data[partnerId].note ? `“${data[partnerId].note}”` : "";
-
-      }
-
-      updateCompatibility(data);
-      updateHeart();
-    });
+    updateCompatibility(data);
+    updateHeart();
+  });
 }
-
-
 
 // COMPATIBILITY
 function updateCompatibility(data) {
   const vals = Object.values(data);
-  compatibility.className = "compatibility";
-
   if (vals.length < 2) {
     compatibility.innerText = "";
     silent.innerText = "One heart is still waiting";
@@ -178,24 +194,16 @@ function updateCompatibility(data) {
 
   silent.innerText = "";
 
-  const loveDiff = Math.abs(vals[0].loved - vals[1].loved);
-  const energyDiff = Math.abs(vals[0].energy - vals[1].energy);
-  const busyDiff = Math.abs(vals[0].busy - vals[1].busy);
+  const score =
+    Math.abs(vals[0].loved - vals[1].loved) * 1.6 +
+    Math.abs(vals[0].energy - vals[1].energy) * 1.1 +
+    Math.abs(vals[0].busy - vals[1].busy) * 0.8;
 
-  const score = loveDiff * 1.6 + energyDiff * 1.1 + busyDiff * 0.8;
-
-  if (score <= 3) {
-    compatibility.innerText = "Perfectly in sync";
-    compatibility.classList.add("good");
-  } else if (score <= 7) {
-    compatibility.innerText = "Doing okay — stay close";
-    compatibility.classList.add("ok");
-  } else {
-    compatibility.innerText = "One of you needs care";
-    compatibility.classList.add("bad");
-  }
+  compatibility.innerText =
+    score <= 3 ? "Perfectly in sync" :
+    score <= 7 ? "Doing okay — stay close" :
+    "One of you needs care";
 }
-
 
 // HEART
 function updateHeart() {
@@ -208,44 +216,3 @@ function updateHeart() {
 if (new Date().getHours() >= 22) {
   document.body.classList.add("night");
 }
-
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const particles = Array.from({ length: 35 }, () => ({
-  x: Math.random() * canvas.width,
-  y: Math.random() * canvas.height,
-  r: Math.random() * 2 + 1,
- dy: document.body.classList.contains("night")
-  ? Math.random() * 0.15 + 0.05
-  : Math.random() * 0.3 + 0.1
-
-}));
-
-function drawParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-ctx.fillStyle = document.body.classList.contains("night")
-  ? "rgba(255,255,255,0.6)"
-  : "#ff5c8a";
-
-  particles.forEach(p => {
-    p.y += p.dy;
-    if (p.y > canvas.height) p.y = 0;
-
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fill();
-  });
-
-  requestAnimationFrame(drawParticles);
-}
-
-drawParticles();
-
-
-
-
-

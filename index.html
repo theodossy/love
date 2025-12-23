@@ -2,106 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My wife, yana <3</title>
+  <title>My wife, Yana ❤</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="login-screen">
-  <h1>:D</h1>
+  <h1>❤</h1>
+
+  <input type="email" id="email" placeholder="Email">
   <input type="password" id="password" placeholder="Password">
-  <button onclick="checkPassword()">Enter</button>
-  <p id="error"></p>
+
+  <button onclick="login()">Login</button>
+  <button class="secondary" onclick="register()">Register</button>
+
+  <p id="login-error"></p>
 </div>
 
-<div id="main-content" class="hidden neon">
+<!-- MAIN -->
+<div id="main-content" class="hidden">
 
-  <div class="since">❤ Since the lovely date of January 22, 2025</div>
+  <div class="since">❤ Since January 22, 2025</div>
 
-  <div class="circle neon">
+  <div class="circle glow">
     <div class="text">
       <div class="small">Together</div>
-      <div id="days" class="big">0</div>
-      <div class="small">DAYS</div>
+      <div id="years" class="big">0</div>
+      <div class="small">YEARS</div>
     </div>
   </div>
 
-  <div class="quote">
-    "I love you not because of who you are, but because of who I am when I am with you."
-  </div>
-
-  <div class="time-row neon">
-    <div><span id="years">0</span><br>Years</div>
+  <div class="time-row">
     <div><span id="months">0</span><br>Months</div>
-    <div><span id="daysSmall">0</span><br>Days</div>
+    <div><span id="days">0</span><br>Days</div>
     <div><span id="hours">0</span><br>Hours</div>
     <div><span id="minutes">0</span><br>Minutes</div>
     <div><span id="seconds">0</span><br>Seconds</div>
   </div>
 
-  <div class="feelings-board neon">
+  <div id="compatibility" class="compatibility"></div>
+  <div id="silent" class="silent"></div>
 
+  <div class="feelings-board">
     <h2>Today</h2>
 
-    <div class="columns">
+    <label>How loved do you feel today?</label>
+    <input type="range" min="0" max="10" id="loved" class="slider">
+    <span id="loved-val">5</span>
 
-      <div class="person">
-        <h3>You</h3>
+    <label>How energetic do you feel?</label>
+    <input type="range" min="0" max="10" id="energy" class="slider">
+    <span id="energy-val">5</span>
 
-        <label>Loved</label>
-        <input type="range" min="0" max="10" value="5" class="slider" id="you-loved">
-        <span id="you-loved-val">5</span>
+    <label>How busy is your day?</label>
+    <input type="range" min="0" max="10" id="busy" class="slider">
+    <span id="busy-val">5</span>
 
-        <label>Energy</label>
-        <input type="range" min="0" max="10" value="5" class="slider" id="you-energy">
-        <span id="you-energy-val">5</span>
+    <textarea id="note" placeholder="Your message for today..."></textarea>
 
-        <label>Busy</label>
-        <input type="range" min="0" max="10" value="5" class="slider" id="you-busy">
-        <span id="you-busy-val">5</span>
+    <button onclick="saveToday()">Save today</button>
+    <p id="save-status"></p>
+  </div>
 
-        <textarea id="you-note" placeholder="Say something to her..."></textarea>
-        <button class="save-btn" onclick="saveYou()">Save Yours</button>
-        <p id="you-status"></p>
-      </div>
-
-      <div class="person">
-        <h3>Her</h3>
-
-        <label>Loved</label>
-        <input type="range" min="0" max="10" value="5" class="slider" id="her-loved">
-        <span id="her-loved-val">5</span>
-
-        <label>Energy</label>
-        <input type="range" min="0" max="10" value="5" class="slider" id="her-energy">
-        <span id="her-energy-val">5</span>
-
-        <label>Busy</label>
-        <input type="range" min="0" max="10" value="5" class="slider" id="her-busy">
-        <span id="her-busy-val">5</span>
-
-        <textarea id="her-note" placeholder="Her words to you..."></textarea>
-        <button class="save-btn" onclick="saveHer()">Save Hers</button>
-        <p id="her-status"></p>
-      </div>
-
-    </div>
-
-    <div class="heart-container">
-      <div class="heart" id="heart"></div>
-    </div>
-
-    <p class="reminder">Come back tomorrow ♥</p>
-
+  <div class="heart-container">
+    <div class="heart" id="heart"></div>
   </div>
 
 </div>
 
-<div id="toast" class="toast hidden">Saved ♥</div>
-
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script src="script.js"></script>

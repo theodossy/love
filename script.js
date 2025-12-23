@@ -1,8 +1,8 @@
 // 🔥 FIREBASE CONFIG (PASTE YOURS)
 const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_ID",
+  apiKey: "AIzaSyDH8rZPpwtVzsBJSl_TM2oLJhR22Bwpb0I",
+  authDomain: "love-2-697ee.firebaseapp.com",
+  projectId: "love-2-697ee",
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -158,3 +158,4 @@ function updateHeart() {
 if (new Date().getHours() >= 22) {
   document.body.classList.add("night");
 }
+

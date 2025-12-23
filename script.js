@@ -223,12 +223,17 @@ const particles = Array.from({ length: 35 }, () => ({
   x: Math.random() * canvas.width,
   y: Math.random() * canvas.height,
   r: Math.random() * 2 + 1,
-  dy: Math.random() * 0.3 + 0.1
+ dy: document.body.classList.contains("night")
+  ? Math.random() * 0.15 + 0.05
+  : Math.random() * 0.3 + 0.1
+
 }));
 
 function drawParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#ff5c8a";
+ctx.fillStyle = document.body.classList.contains("night")
+  ? "rgba(255,255,255,0.6)"
+  : "#ff5c8a";
 
   particles.forEach(p => {
     p.y += p.dy;
@@ -243,6 +248,7 @@ function drawParticles() {
 }
 
 drawParticles();
+
 
 
 

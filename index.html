@@ -15,11 +15,11 @@
   <p id="error"></p>
 </div>
 
-<div id="main-content" class="hidden">
+<div id="main-content" class="hidden neon">
 
   <div class="since">❤ Since the lovely date of January 22, 2025</div>
 
-  <div class="circle">
+  <div class="circle neon">
     <div class="text">
       <div class="small">Together</div>
       <div id="days" class="big">0</div>
@@ -31,22 +31,21 @@
     "I love you not because of who you are, but because of who I am when I am with you."
   </div>
 
-  <div class="time-row">
+  <div class="time-row neon">
+    <div><span id="years">0</span><br>Years</div>
     <div><span id="months">0</span><br>Months</div>
-    <div><span id="extraDays">0</span><br>Days</div>
+    <div><span id="daysSmall">0</span><br>Days</div>
     <div><span id="hours">0</span><br>Hours</div>
     <div><span id="minutes">0</span><br>Minutes</div>
     <div><span id="seconds">0</span><br>Seconds</div>
   </div>
 
-  <!-- DAILY FEELINGS BOARD -->
-  <div class="feelings-board">
+  <div class="feelings-board neon">
 
     <h2>Today</h2>
 
     <div class="columns">
 
-      <!-- YOU -->
       <div class="person">
         <h3>You</h3>
 
@@ -63,12 +62,10 @@
         <span id="you-busy-val">5</span>
 
         <textarea id="you-note" placeholder="Say something to her..."></textarea>
-<button class="save-btn" onclick="saveYou()">Save Yours</button>
-<p id="you-status"></p>
-
+        <button class="save-btn" onclick="saveYou()">Save Yours</button>
+        <p id="you-status"></p>
       </div>
 
-      <!-- HER -->
       <div class="person">
         <h3>Her</h3>
 
@@ -84,10 +81,9 @@
         <input type="range" min="0" max="10" value="5" class="slider" id="her-busy">
         <span id="her-busy-val">5</span>
 
-       <textarea id="her-note" placeholder="Her words to you..."></textarea>
-<button class="save-btn" onclick="saveHer()">Save Hers</button>
-<p id="her-status"></p>
-
+        <textarea id="her-note" placeholder="Her words to you..."></textarea>
+        <button class="save-btn" onclick="saveHer()">Save Hers</button>
+        <p id="her-status"></p>
       </div>
 
     </div>
@@ -96,13 +92,13 @@
       <div class="heart" id="heart"></div>
     </div>
 
-  
-
     <p class="reminder">Come back tomorrow ♥</p>
 
   </div>
 
 </div>
+
+<div id="toast" class="toast hidden">Saved ♥</div>
 
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -111,6 +107,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-
-
-

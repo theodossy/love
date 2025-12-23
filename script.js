@@ -231,7 +231,7 @@ if (new Date().getHours() >= 22) {
 }
 
 /* ------------------------
-   PARTICLES (FIXED)
+   PARTICLES (ADVANCED)
 ------------------------ */
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
@@ -243,27 +243,84 @@ function resize() {
 resize();
 window.addEventListener("resize", resize);
 
-const particles = Array.from({ length: 40 }, () => ({
-  x: Math.random() * canvas.width,
-  y: Math.random() * canvas.height,
-  r: Math.random() * 2 + 1,
-  dy: Math.random() * 0.3 + 0.1
-}));
+const isNight = () => new Date().getHours() >= 22;
 
-function drawParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "rgba(255,92,138,0.8)";
+const BASE_COUNT = 50;
+let burstActive = false;
+let burstEnd = 0;
+
+const particles = Array.from({ length: BASE_COUNT }, () => createParticle());
+
+function createParticle(x = Math.random() * canvas.width, y = Math.random() * canvas.height) {
+  return {
+    x,
+    y,
+    vx: (Math.random() - 0.5) * 0.2,
+    vy: Math.random() * 0.3 + 0.1,
+    r: Math.random() * 2 + 1,
+    tx: 0,
+    ty: 0
+  };
+}
+
+function triggerParticleBurst() {
+  const card = document.querySelector(".stats-card");
+  if (!card) return;
+
+  const rect = card.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+
+  burstActive = true;
+  burstEnd = performance.now() + 1200;
 
   particles.forEach(p => {
-    p.y += p.dy;
-    if (p.y > canvas.height) p.y = 0;
+    const dx = p.x - cx;
+    const dy = p.y - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+    p.vx = (dx / dist) * (Math.random() * 6 + 4);
+    p.vy = (dy / dist) * (Math.random() * 6 + 4);
+  });
+}
+
+function drawParticles(time) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const night = isNight();
+  ctx.fillStyle = night
+    ? "rgba(180,200,255,0.55)"
+    : "rgba(255,92,138,0.85)";
+
+  particles.forEach(p => {
+    if (!burstActive) {
+      p.vx += (Math.random() - 0.5) * 0.01;
+      p.vy += night ? 0.02 : 0.01;
+    }
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    // bounce
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -0.9;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -0.9;
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
     ctx.fill();
   });
 
+  if (burstActive && time > burstEnd) {
+    burstActive = false;
+    particles.forEach(p => {
+      p.vx = (Math.random() - 0.5) * 0.3;
+      p.vy = Math.random() * 0.4 + 0.1;
+    });
+  }
+
   requestAnimationFrame(drawParticles);
 }
 
 drawParticles();
+
+

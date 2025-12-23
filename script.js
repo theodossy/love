@@ -43,10 +43,6 @@ document.getElementById("loginBtn").onclick = () => {
     .catch(e => loginError.innerText = e.message);
 };
 
-document.getElementById("registerBtn").onclick = () => {
-  auth.createUserWithEmailAndPassword(email.value, password.value)
-    .catch(e => loginError.innerText = e.message);
-};
 
 auth.onAuthStateChanged(user => {
   if (!user) return;
@@ -248,6 +244,7 @@ ctx.fillStyle = document.body.classList.contains("night")
 }
 
 drawParticles();
+
 
 
 

@@ -1,34 +1,52 @@
-// 🔥 FIREBASE CONFIG (PASTE YOURS)
+// FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDH8rZPpwtVzsBJSl_TM2oLJhR22Bwpb0I",
   authDomain: "love-2-697ee.firebaseapp.com",
-  projectId: "love-2-697ee",
+  projectId: "love-2-697ee"
 };
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Offline mode
 db.enablePersistence().catch(() => {});
 
-// DATE
+// DOM
+const loginScreen = document.getElementById("login-screen");
+const mainContent = document.getElementById("main-content");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const loginError = document.getElementById("login-error");
+
+const yearsEl = document.getElementById("years");
+const monthsEl = document.getElementById("months");
+const daysEl = document.getElementById("days");
+const hoursEl = document.getElementById("hours");
+const minutesEl = document.getElementById("minutes");
+const secondsEl = document.getElementById("seconds");
+
+const loved = document.getElementById("loved");
+const energy = document.getElementById("energy");
+const busy = document.getElementById("busy");
+const note = document.getElementById("note");
+const saveStatus = document.getElementById("save-status");
+const heart = document.getElementById("heart");
+const compatibility = document.getElementById("compatibility");
+const silent = document.getElementById("silent");
+
+// DATE (correct)
 const startDate = new Date(2025, 0, 22);
 
 // AUTH
-function register() {
-  auth.createUserWithEmailAndPassword(
-    email.value,
-    password.value
-  ).catch(e => loginError.innerText = e.message);
-}
+document.getElementById("loginBtn").onclick = () => {
+  auth.signInWithEmailAndPassword(email.value, password.value)
+    .catch(e => loginError.innerText = e.message);
+};
 
-function login() {
-  auth.signInWithEmailAndPassword(
-    email.value,
-    password.value
-  ).catch(e => loginError.innerText = e.message);
-}
+document.getElementById("registerBtn").onclick = () => {
+  auth.createUserWithEmailAndPassword(email.value, password.value)
+    .catch(e => loginError.innerText = e.message);
+};
 
 auth.onAuthStateChanged(user => {
   if (!user) return;
@@ -37,40 +55,38 @@ auth.onAuthStateChanged(user => {
   startApp(user.uid);
 });
 
-// COUNTER (CALENDAR CORRECT)
+// COUNTER
 function updateCounter() {
   const now = new Date();
-  let years = now.getFullYear() - startDate.getFullYear();
-  let months = now.getMonth() - startDate.getMonth();
-  let days = now.getDate() - startDate.getDate();
 
-  if (days < 0) {
-    months--;
-    days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+  let y = now.getFullYear() - startDate.getFullYear();
+  let m = now.getMonth() - startDate.getMonth();
+  let d = now.getDate() - startDate.getDate();
+
+  if (d < 0) {
+    m--;
+    d += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
   }
-  if (months < 0) {
-    years--;
-    months += 12;
+  if (m < 0) {
+    y--;
+    m += 12;
   }
 
   const diff = now - startDate;
-  const seconds = Math.floor(diff / 1000) % 60;
-  const minutes = Math.floor(diff / 60000) % 60;
-  const hours = Math.floor(diff / 3600000) % 24;
-
-  yearsEl.innerText = years;
-  monthsEl.innerText = months;
-  daysEl.innerText = days;
-  hoursEl.innerText = hours;
-  minutesEl.innerText = minutes;
-  secondsEl.innerText = seconds;
+  yearsEl.innerText = y;
+  monthsEl.innerText = m;
+  daysEl.innerText = d;
+  hoursEl.innerText = Math.floor(diff / 3600000) % 24;
+  minutesEl.innerText = Math.floor(diff / 60000) % 60;
+  secondsEl.innerText = Math.floor(diff / 1000) % 60;
 }
 
 // APP
 function startApp(uid) {
+  updateCounter();
   setInterval(updateCounter, 1000);
-  loadToday(uid);
   setupSliders();
+  loadToday(uid);
 }
 
 // SLIDERS
@@ -83,15 +99,13 @@ function setupSliders() {
   });
 }
 
-// SAVE (DAILY LOCK)
-async function saveToday() {
+// SAVE
+document.getElementById("saveBtn").onclick = async () => {
   const today = new Date().toISOString().split("T")[0];
   const ref = db.collection("days").doc(today);
-
   const snap = await ref.get();
-  const data = snap.exists ? snap.data() : {};
 
-  if (data[auth.currentUser.uid]) {
+  if (snap.exists && snap.data()[auth.currentUser.uid]) {
     saveStatus.innerText = "Already saved today ❤";
     return;
   }
@@ -107,27 +121,30 @@ async function saveToday() {
   }, { merge: true });
 
   saveStatus.innerText = "Saved ❤";
-}
+};
 
 // LOAD
 function loadToday(uid) {
   const today = new Date().toISOString().split("T")[0];
 
-  db.collection("days").doc(today)
-    .onSnapshot(doc => {
-      if (!doc.exists) return;
-      const data = doc.data();
+  db.collection("days").doc(today).onSnapshot(doc => {
+    if (!doc.exists) return;
+    const data = doc.data();
 
-      if (data[uid]) {
-        loved.value = data[uid].loved;
-        energy.value = data[uid].energy;
-        busy.value = data[uid].busy;
-        note.value = data[uid].note;
-      }
+    if (data[uid]) {
+      loved.value = data[uid].loved;
+      energy.value = data[uid].energy;
+      busy.value = data[uid].busy;
+      note.value = data[uid].note;
 
-      updateCompatibility(data);
-      updateHeart();
-    });
+      lovedVal.innerText = loved.value;
+      energyVal.innerText = energy.value;
+      busyVal.innerText = busy.value;
+    }
+
+    updateCompatibility(data);
+    updateHeart();
+  });
 }
 
 // COMPATIBILITY
@@ -139,11 +156,10 @@ function updateCompatibility(data) {
   }
 
   silent.innerText = "";
-  const avgLove = (Number(vals[0].loved) + Number(vals[1].loved)) / 2;
-
+  const avg = (Number(vals[0].loved) + Number(vals[1].loved)) / 2;
   compatibility.innerText =
-    avgLove > 7 ? "In sync ❤" :
-    avgLove > 4 ? "One of you needs care" :
+    avg > 7 ? "In sync ❤" :
+    avg > 4 ? "One of you needs care" :
     "Hard day – be gentle";
 }
 
@@ -158,4 +174,3 @@ function updateHeart() {
 if (new Date().getHours() >= 22) {
   document.body.classList.add("night");
 }
-

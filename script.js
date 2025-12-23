@@ -172,18 +172,34 @@ function loadToday(uid) {
 // COMPATIBILITY
 function updateCompatibility(data) {
   const vals = Object.values(data);
+  compatibility.className = "compatibility";
+
   if (vals.length < 2) {
-    silent.innerText = "One heart is still waiting ❤";
+    compatibility.innerText = "";
+    silent.innerText = "One heart is still waiting";
     return;
   }
 
   silent.innerText = "";
-  const avg = (Number(vals[0].loved) + Number(vals[1].loved)) / 2;
-  compatibility.innerText =
-    avg > 7 ? "In sync ❤" :
-    avg > 4 ? "One of you needs care" :
-    "Hard day – be gentle";
+
+  const loveDiff = Math.abs(vals[0].loved - vals[1].loved);
+  const energyDiff = Math.abs(vals[0].energy - vals[1].energy);
+  const busyDiff = Math.abs(vals[0].busy - vals[1].busy);
+
+  const score = loveDiff * 1.6 + energyDiff * 1.1 + busyDiff * 0.8;
+
+  if (score <= 3) {
+    compatibility.innerText = "Perfectly in sync";
+    compatibility.classList.add("good");
+  } else if (score <= 7) {
+    compatibility.innerText = "Doing okay — stay close";
+    compatibility.classList.add("ok");
+  } else {
+    compatibility.innerText = "One of you needs care";
+    compatibility.classList.add("bad");
+  }
 }
+
 
 // HEART
 function updateHeart() {
@@ -227,5 +243,6 @@ function drawParticles() {
 }
 
 drawParticles();
+
 
 

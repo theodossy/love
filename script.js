@@ -127,25 +127,28 @@ document.getElementById("saveBtn").onclick = async () => {
 function loadToday(uid) {
   const today = new Date().toISOString().split("T")[0];
 
-  db.collection("days").doc(today).onSnapshot(doc => {
-    if (!doc.exists) return;
-    const data = doc.data();
+  db.collection("days").doc(today)
+    .onSnapshot(doc => {
+      if (!doc.exists) return;
+      const data = doc.data();
 
-    if (data[uid]) {
-      loved.value = data[uid].loved;
-      energy.value = data[uid].energy;
-      busy.value = data[uid].busy;
-      note.value = data[uid].note;
+      if (data[uid]) {
+        loved.value = data[uid].loved;
+        energy.value = data[uid].energy;
+        busy.value = data[uid].busy;
+        note.value = data[uid].note;
 
-      lovedVal.innerText = loved.value;
-      energyVal.innerText = energy.value;
-      busyVal.innerText = busy.value;
-    }
+        // 🔥 FIX: update visible numbers on load
+        document.getElementById("loved-val").innerText = loved.value;
+        document.getElementById("energy-val").innerText = energy.value;
+        document.getElementById("busy-val").innerText = busy.value;
+      }
 
-    updateCompatibility(data);
-    updateHeart();
-  });
+      updateCompatibility(data);
+      updateHeart();
+    });
 }
+
 
 // COMPATIBILITY
 function updateCompatibility(data) {
@@ -174,3 +177,4 @@ function updateHeart() {
 if (new Date().getHours() >= 22) {
   document.body.classList.add("night");
 }
+

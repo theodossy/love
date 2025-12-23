@@ -130,24 +130,41 @@ function loadToday(uid) {
   db.collection("days").doc(today)
     .onSnapshot(doc => {
       if (!doc.exists) return;
-      const data = doc.data();
 
+      const data = doc.data();
+      const users = Object.keys(data);
+
+      // ---- YOUR DATA ----
       if (data[uid]) {
         loved.value = data[uid].loved;
         energy.value = data[uid].energy;
         busy.value = data[uid].busy;
         note.value = data[uid].note;
 
-        // 🔥 FIX: update visible numbers on load
         document.getElementById("loved-val").innerText = loved.value;
         document.getElementById("energy-val").innerText = energy.value;
         document.getElementById("busy-val").innerText = busy.value;
+      }
+
+      // ---- PARTNER DATA ----
+      const partnerId = users.find(id => id !== uid);
+
+      if (partnerId && data[partnerId]) {
+        document.getElementById("partner-card").classList.remove("blurred");
+        document.getElementById("partner-wait").classList.add("hidden");
+        document.getElementById("partner-data").classList.remove("hidden");
+
+        document.getElementById("p-loved").innerText = data[partnerId].loved;
+        document.getElementById("p-energy").innerText = data[partnerId].energy;
+        document.getElementById("p-busy").innerText = data[partnerId].busy;
+        document.getElementById("p-note").innerText = data[partnerId].note || "";
       }
 
       updateCompatibility(data);
       updateHeart();
     });
 }
+
 
 
 // COMPATIBILITY
@@ -176,38 +193,5 @@ function updateHeart() {
 // NIGHT MODE
 if (new Date().getHours() >= 22) {
   document.body.classList.add("night");
-}
-
-/* -------------------
-   PARTNER CARD
-------------------- */
-.partner-card {
-  background: #ff9bb5;
-  padding: 25px;
-  border-radius: 30px;
-  margin-top: 25px;
-  transition: all 0.5s ease;
-}
-
-.partner-card h2 {
-  margin-bottom: 15px;
-}
-
-.partner-card.blurred {
-  filter: blur(6px);
-  opacity: 0.6;
-}
-
-.partner-card.blurred * {
-  pointer-events: none;
-}
-
-.partner-note {
-  margin-top: 10px;
-  font-style: italic;
-}
-
-.hidden {
-  display: none;
 }
 

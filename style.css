@@ -1,68 +1,330 @@
-firebase.initializeApp({
-  apiKey: "AIzaSyDH8rZPpwtVzsBJSl_TM2oLJhR22Bwpb0I",
-  authDomain: "love-2-697ee.firebaseapp.com",
-  projectId: "love-2-697ee"
-});
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-function resize() {
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-}
-resize();
-addEventListener("resize", resize);
-
-const particles = Array.from({ length: 80 }, () => ({
-  x: Math.random() * canvas.width,
-  y: Math.random() * canvas.height,
-  vx: (Math.random() - 0.5) * 0.6,
-  vy: (Math.random() - 0.5) * 0.6,
-  r: Math.random() * 2 + 1
-}));
-
-function triggerParticleBurst() {
-  const card = document.querySelector(".feelings-board");
-  const rect = card.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top + rect.height / 2;
-
-  particles.forEach(p => {
-    const dx = p.x - cx;
-    const dy = p.y - cy;
-    const d = Math.hypot(dx, dy) || 1;
-    p.vx = (dx / d) * 6;
-    p.vy = (dy / d) * 6;
-  });
+* {
+  box-sizing: border-box;
 }
 
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "rgba(255,255,255,0.8)";
-
-  particles.forEach(p => {
-    p.x += p.vx;
-    p.y += p.vy;
-
-    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fill();
-
-    p.vx *= 0.98;
-    p.vy *= 0.98;
-  });
-
-  requestAnimationFrame(draw);
+body {
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(180deg, #ffd6e0, #ffc0cf);
+  color: #b00040;
+  text-align: center;
 }
-draw();
 
-document.getElementById("saveBtn").onclick = () => {
-  triggerParticleBurst();
-};
+/* NIGHT MODE */
+body.night {
+  background: linear-gradient(180deg, #2b0015, #1a000c);
+  color: #ff9bb5;
+}
+
+.hidden {
+  display: none;
+}
+
+/* -------------------
+   LOGIN
+------------------- */
+#login-screen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+#login-screen input {
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  width: 240px;
+  font-size: 16px;
+}
+
+#login-screen button {
+  padding: 12px 30px;
+  border-radius: 30px;
+  border: none;
+  background: #ff5c8a;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#login-error {
+  color: red;
+}
+
+/* -------------------
+   MAIN CONTAINER
+------------------- */
+#main-content {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px 15px;
+}
+
+/* -------------------
+   HEADER
+------------------- */
+.since {
+  background: #ff9bb5;
+  padding: 12px 25px;
+  border-radius: 30px;
+  display: inline-block;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+/* -------------------
+   COUNTER CIRCLE
+------------------- */
+.circle {
+  margin: 30px auto;
+  width: 230px;
+  height: 230px;
+  background: #ff9bb5;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 40px rgba(255, 92, 138, 0.6);
+}
+
+.text .big {
+  font-size: 60px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.text .small {
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+
+/* -------------------
+   TIME ROW
+------------------- */
+.time-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  background: #ff9bb5;
+  padding: 18px;
+  border-radius: 30px;
+  margin: 25px auto;
+}
+
+.time-row div {
+  min-width: 80px;
+}
+
+.time-row span {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+/* -------------------
+   COMPATIBILITY TEXT
+------------------- */
+.compatibility {
+  font-size: 28px;
+  font-weight: 900;
+  margin: 20px 0;
+  letter-spacing: 1px;
+  transition: all 0.4s ease;
+}
+
+/* STATES */
+.compatibility.good {
+  color: #2e7d32; /* deep green */
+  text-shadow: 0 0 10px rgba(46, 125, 50, 0.4);
+}
+
+.compatibility.ok {
+  color: #ff9800; /* warm orange */
+  text-shadow: 0 0 10px rgba(255, 152, 0, 0.4);
+}
+
+.compatibility.bad {
+  color: #b00020; /* deep red */
+  text-shadow: 0 0 12px rgba(176, 0, 32, 0.5);
+}
+
+
+/* -------------------
+   FEELINGS CARD
+------------------- */
+.feelings-board {
+  background: #ff9bb5;
+  padding: 25px;
+  border-radius: 30px;
+  margin-top: 30px;
+}
+
+.feelings-board h2 {
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+
+.feelings-board label {
+  display: block;
+  margin-top: 18px;
+  font-size: 18px;
+}
+
+/* SLIDERS */
+.slider {
+  width: 100%;
+  margin-top: 10px;
+  accent-color: #ff5c8a;
+}
+
+.feelings-board span {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* TEXTAREA */
+textarea {
+  width: 100%;
+  height: 80px;
+  border-radius: 25px;
+  border: none;
+  padding: 15px;
+  margin-top: 20px;
+  font-size: 16px;
+  background: #ffd6e0;
+  color: #b00040;
+  resize: none;
+}
+
+textarea::placeholder {
+  color: #7a002b;
+}
+
+/* SAVE BUTTON */
+.feelings-board button {
+  margin-top: 20px;
+  padding: 14px 35px;
+  border-radius: 30px;
+  border: none;
+  background: #ff5c8a;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* -------------------
+   HEART
+------------------- */
+.heart-container {
+  margin: 35px 0;
+}
+
+.heart {
+  width: 55px;
+  height: 55px;
+  background: #ff5c8a;
+  transform: rotate(-45deg);
+  margin: auto;
+  animation: pulse 1.5s infinite;
+  box-shadow: 0 0 25px rgba(255, 92, 138, 0.7);
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  width: 55px;
+  height: 55px;
+  background: #ff5c8a;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.heart::before {
+  top: -28px;
+  left: 0;
+}
+
+.heart::after {
+  left: 28px;
+  top: 0;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1) rotate(-45deg); }
+  50% { transform: scale(1.15) rotate(-45deg); }
+  100% { transform: scale(1) rotate(-45deg); }
+}
+/* -------------------
+   PARTNER STATS
+------------------- */
+.partner-stat {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 8px 0;
+  letter-spacing: 0.5px;
+}
+
+/* -------------------
+   PARTNER NOTE
+------------------- */
+.partner-note {
+  margin-top: 18px;
+  font-size: 20px;
+  font-style: italic;
+  padding: 18px 22px;
+  border-left: 4px solid #b00040;
+  background: rgba(255, 214, 224, 0.6);
+  border-radius: 18px;
+  line-height: 1.5;
+}
+
+/* -------------------
+   PARTNER CARD
+------------------- */
+.partner-card {
+  background: #ff9bb5;
+  padding: 25px;
+  border-radius: 30px;
+  margin-top: 25px;
+  transition: all 0.5s ease;
+}
+
+.partner-card h2 {
+  margin-bottom: 15px;
+}
+
+.partner-card.blurred {
+  filter: blur(6px);
+  opacity: 0.6;
+}
+
+.partner-card.blurred * {
+  pointer-events: none;
+}
+
+.partner-note {
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.hidden {
+  display: none;
+}
+
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.15;
+}
+
+
+
+

@@ -127,39 +127,31 @@ body.night {
 }
 
 /* -------------------
-   COMPATIBILITY
+   COMPATIBILITY TEXT
 ------------------- */
-function updateCompatibility(data) {
-  const vals = Object.values(data);
-
-  compatibility.className = "compatibility";
-
-  if (vals.length < 2) {
-    compatibility.innerText = "";
-    silent.innerText = "One heart is still waiting";
-    return;
-  }
-
-  silent.innerText = "";
-
-  const loveDiff = Math.abs(vals[0].loved - vals[1].loved);
-  const energyDiff = Math.abs(vals[0].energy - vals[1].energy);
-  const busyDiff = Math.abs(vals[0].busy - vals[1].busy);
-
-  const score = loveDiff * 1.5 + energyDiff + busyDiff;
-
-  if (score <= 3) {
-    compatibility.innerText = "Perfectly in sync";
-    compatibility.classList.add("good");
-  } else if (score <= 7) {
-    compatibility.innerText = "Doing okay, stay close";
-    compatibility.classList.add("ok");
-  } else {
-    compatibility.innerText = "One of you needs care";
-    compatibility.classList.add("bad");
-  }
+.compatibility {
+  font-size: 28px;
+  font-weight: 900;
+  margin: 20px 0;
+  letter-spacing: 1px;
+  transition: all 0.4s ease;
 }
 
+/* STATES */
+.compatibility.good {
+  color: #2e7d32; /* deep green */
+  text-shadow: 0 0 10px rgba(46, 125, 50, 0.4);
+}
+
+.compatibility.ok {
+  color: #ff9800; /* warm orange */
+  text-shadow: 0 0 10px rgba(255, 152, 0, 0.4);
+}
+
+.compatibility.bad {
+  color: #b00020; /* deep red */
+  text-shadow: 0 0 12px rgba(176, 0, 32, 0.5);
+}
 
 
 /* -------------------
@@ -332,6 +324,7 @@ textarea::placeholder {
   z-index: -1;
   opacity: 0.15;
 }
+
 
 
 

@@ -2,22 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My wife, Yana ❤</title>
+  <title>For my wife, Yana ❤</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<canvas id="particles"></canvas>
+
 <!-- LOGIN -->
 <div id="login-screen">
   <h1>❤</h1>
-
   <input type="email" id="email" placeholder="Email">
   <input type="password" id="password" placeholder="Password">
-
   <button id="loginBtn">Login</button>
-  
-
   <p id="login-error"></p>
 </div>
 
@@ -26,7 +24,7 @@
 
   <div class="since">❤ Since January 22, 2025</div>
 
-  <div class="circle glow">
+  <div class="circle">
     <div class="text">
       <div class="small">Together</div>
       <div id="years" class="big">0</div>
@@ -46,20 +44,17 @@
   <div id="silent" class="silent"></div>
 
   <div class="feelings-board">
-    <!-- PARTNER STATS -->
-<div id="partner-card" class="partner-card blurred">
-  <h2>Your partner today</h2>
 
-  <p id="partner-wait">Waiting for your partner’s stats… ❤</p>
-
-  <div id="partner-data" class="hidden">
-   <p class="partner-stat">Loved: <span id="p-loved"></span></p>
-<p class="partner-stat">Energy: <span id="p-energy"></span></p>
-<p class="partner-stat">Busy: <span id="p-busy"></span></p>
-
-    <p class="partner-note" id="p-note"></p>
-  </div>
-</div>
+    <div id="partner-card" class="partner-card blurred">
+      <h2>Your partner today</h2>
+      <p id="partner-wait">Waiting for your partner’s stats… ❤</p>
+      <div id="partner-data" class="hidden">
+        <p class="partner-stat">Loved: <span id="p-loved"></span></p>
+        <p class="partner-stat">Energy: <span id="p-energy"></span></p>
+        <p class="partner-stat">Busy: <span id="p-busy"></span></p>
+        <p class="partner-note" id="p-note"></p>
+      </div>
+    </div>
 
     <h2>Today</h2>
 
@@ -76,12 +71,11 @@
     <span id="busy-val">5</span>
 
     <textarea id="note" placeholder="Your message for today..."></textarea>
-
     <button id="saveBtn">Save today</button>
+
     <p id="save-status"></p>
     <p id="reset-timer" class="silent"></p>
-<p id="partner-timer" class="silent"></p>
-
+    <p id="partner-timer" class="silent"></p>
   </div>
 
   <div class="heart-container">
@@ -90,17 +84,10 @@
 
 </div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
 <script src="script.js"></script>
-<canvas id="particles"></canvas>
+
 </body>
 </html>
-
-
-
-
-

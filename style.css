@@ -277,3 +277,10 @@ textarea::placeholder {
   display: none;
 }
 
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.15;
+}
+

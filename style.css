@@ -20,6 +20,9 @@ textarea {
   width: 100%;
   resize: none;
   overflow: hidden;
+  border-radius: 15px;
+  padding: 10px;
+  border: none;
 }
 
 .glow {

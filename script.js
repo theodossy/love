@@ -123,6 +123,8 @@ function startApp(uid) {
   setInterval(timeUntilMidnight, 1000);
   setupSliders();
   loadToday(uid);
+  showDailyText();
+
 }
 
 // SLIDERS
@@ -313,5 +315,21 @@ function drawParticles() {
 
 
 drawParticles();
+
+function showDailyText() {
+  const el = document.getElementById("daily-text");
+  if (!el) return;
+
+  const today = new Date().toISOString().split("T")[0];
+
+  // Simple deterministic hash based on date
+  let hash = 0;
+  for (let i = 0; i < today.length; i++) {
+    hash = today.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  const index = Math.abs(hash) % dailyTexts.length;
+  el.innerText = dailyTexts[index];
+}
 
 

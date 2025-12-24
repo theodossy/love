@@ -106,11 +106,14 @@ function timeUntilMidnight() {
 // TIME SINCE
 function timeSince(timestamp) {
   if (!timestamp) return "";
-  const diff = new Date() - timestamp.toDate();
-  const h = Math.floor(diff / 3600000);
-  const m = Math.floor(diff / 60000) % 60;
-  return h > 0 ? `Uploaded ${h}h ${m}m ago` : `Uploaded ${m}m ago`;
+
+  const date = timestamp.toDate();
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+
+  return `Posted at ${hours}:${minutes}`;
 }
+
 
 // APP
 function startApp(uid) {
@@ -306,3 +309,4 @@ function drawParticles() {
 }
 
 drawParticles();
+

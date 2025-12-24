@@ -267,11 +267,13 @@ function createParticle() {
   return {
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: Math.random() * 2.2 + 0.6,
-    speed: Math.random() * 0.15 + 0.05,
-    drift: (Math.random() - 0.5) * 0.05
+    r: Math.random() * 1.8 + 0.8,
+    speed: Math.random() * 0.12 + 0.04,
+    drift: (Math.random() - 0.5) * 0.03,
+    alpha: Math.random() * 0.5 + 0.3
   };
 }
+
 
 for (let i = 0; i < PARTICLE_COUNT; i++) {
   particles.push(createParticle());
@@ -282,16 +284,21 @@ function drawParticles() {
 
   const night = document.body.classList.contains("night");
 
-  ctx.fillStyle = night
-    ? "rgba(207,176,91,0.85)" // GOLD NEON (dark mode)
-    : "rgba(255,255,255,0.7)"; // SOFT WHITE (light mode)
-
-  ctx.shadowBlur = night ? 20 : 10;
-  ctx.shadowColor = night
-    ? "rgba(207,176,91,0.9)"
-    : "rgba(255,255,255,0.8)";
-
   particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+
+    ctx.fillStyle = night
+      ? `rgba(207,176,91,${p.alpha})`
+      : `rgba(255,255,255,${p.alpha})`;
+
+    ctx.shadowBlur = night ? 18 : 10;
+    ctx.shadowColor = night
+      ? "rgba(207,176,91,0.8)"
+      : "rgba(255,255,255,0.7)";
+
+    ctx.fill();
+
     p.y += p.speed;
     p.x += p.drift;
 
@@ -299,14 +306,12 @@ function drawParticles() {
       p.y = -5;
       p.x = Math.random() * canvas.width;
     }
-
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fill();
   });
 
   requestAnimationFrame(drawParticles);
 }
 
+
 drawParticles();
+
 

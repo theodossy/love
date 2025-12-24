@@ -123,7 +123,9 @@ function startApp(uid) {
   setInterval(timeUntilMidnight, 1000);
   setupSliders();
   loadToday(uid);
-  showDailyText();
+  setRandomDailyText();
+
+ 
 
 }
 
@@ -304,21 +306,7 @@ function drawParticles() {
 
 drawParticles();
 
-function showDailyText() {
-  const el = document.getElementById("daily-text");
-  if (!el) return;
 
-  const today = new Date().toISOString().split("T")[0];
-
-  // Simple deterministic hash based on date
-  let hash = 0;
-  for (let i = 0; i < today.length; i++) {
-    hash = today.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  const index = Math.abs(hash) % dailyTexts.length;
-  el.innerText = dailyTexts[index];
-}
 
 
 const dailyTexts = [
@@ -368,6 +356,15 @@ const dailyTexts = [
   "I'm so freaking in loveeeeeeeeeee."
 ];
 
+function setRandomDailyText() {
+  const el = document.getElementById("daily-text");
+  if (!el) return;
+
+  const randomIndex = Math.floor(Math.random() * dailyTexts.length);
+  el.innerText = dailyTexts[randomIndex];
+}
+
+
 function resetTodayUI() {
   loved.value = 5;
   energy.value = 5;
@@ -401,6 +398,7 @@ function setRandomDailyText() {
 }
 
 setRandomDailyText();
+
 
 
 

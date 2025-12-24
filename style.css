@@ -317,10 +317,16 @@ textarea::placeholder {
 #particles {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
-  opacity: 1;
+  #main-content,
+#login-screen {
+  position: relative;
+  z-index: 2;
 }
+
+}
+
 
 /* =========================
    NIGHT MODE TEXT FIXES
@@ -407,6 +413,25 @@ body.night .partner-card {
   background: #7672c1;
   color: #ffffff;
 }
+
+/* NIGHT MODE → GOLD */
+
+body.night button {
+  background: var(--gold);
+  color: #24215d;
+}
+
+body.night .slider {
+  accent-color: var(--gold);
+}
+
+body.night .heart,
+body.night .heart::before,
+body.night .heart::after {
+  background: var(--gold);
+  box-shadow: 0 0 35px rgba(207, 176, 91, 0.9);
+}
+
 
 /* Circle glow softer */
 body.night .circle {
@@ -620,6 +645,7 @@ body.night textarea::placeholder {
 body.night #particles {
   opacity: 0.35;
 }
+
 
 
 

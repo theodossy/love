@@ -484,7 +484,8 @@ body.night #particles {
 
 :root {
   --gold: #cfb05b;
-}
+    --pink: #ff5c8a;
+}  
 
 /* GLOBAL TEXT ACCENT */
 body,
@@ -498,7 +499,8 @@ p {
    BUTTONS
 ------------------------- */
 button {
-  background: var(--gold) !important;
+  background: var(--pink);
+  color: white;
   color: #24215d !important;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -515,7 +517,7 @@ button:hover {
 .heart,
 .heart::before,
 .heart::after {
-  background: var(--gold);
+  background: var(--pink);
 }
 
 .heart {
@@ -526,7 +528,7 @@ button:hover {
    SLIDERS
 ------------------------- */
 .slider {
-  accent-color: var(--gold);
+  accent-color: var(--pink);
 }
 
 /* -------------------------
@@ -618,6 +620,7 @@ body.night textarea::placeholder {
 body.night #particles {
   opacity: 0.35;
 }
+
 
 
 

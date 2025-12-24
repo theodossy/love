@@ -319,19 +319,155 @@ textarea::placeholder {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-}
-
-#main-content,
+  #main-content,
 #login-screen {
   position: relative;
   z-index: 2;
 }
 
-
 }
 
 
+/* =========================
+   NIGHT MODE TEXT FIXES
+========================= */
 
+/* General readable text inside cards */
+body.night .since,
+body.night .circle,
+body.night .time-row,
+body.night .feelings-board,
+body.night .partner-card {
+  color: #ffd6e0; /* same family as bg, but brighter */
+}
+
+/* Strong headings */
+body.night h1,
+body.night h2,
+body.night .text .big,
+body.night .text .small {
+  color: #ffe3ec;
+}
+
+/* Sliders & values */
+body.night .feelings-board span,
+body.night label {
+  color: #ffd6e0;
+}
+
+/* Textarea */
+body.night textarea {
+  background: #2b0015;
+  color: #ffe3ec;
+}
+
+body.night textarea::placeholder {
+  color: #ff9bb5;
+}
+
+/* Partner stats */
+body.night .partner-stat {
+  color: #ffe3ec;
+}
+
+/* Partner note */
+body.night .partner-note {
+  background: rgba(255, 255, 255, 0.05);
+  border-left-color: #ff9bb5;
+  color: #ffe3ec;
+}
+
+/* Compatibility states — night-safe */
+body.night .compatibility.good {
+  color: #81c784;
+}
+
+body.night .compatibility.ok {
+  color: #ffb74d;
+}
+
+body.night .compatibility.bad {
+  color: #ef5350;
+}
+
+/* Muted helper text */
+body.night .silent {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* =========================
+   NIGHT MODE – PURPLE THEME
+========================= */
+
+body.night {
+  background: #24215d;
+  color: #f3f2ff;
+}
+
+/* ALL BLOCKS */
+body.night .since,
+body.night .circle,
+body.night .time-row,
+body.night .feelings-board,
+body.night .partner-card {
+  background: #7672c1;
+  color: #ffffff;
+}
+
+/* NIGHT MODE → GOLD */
+
+body.night button {
+  background: var(--gold);
+  color: #24215d;
+}
+
+body.night .slider {
+  accent-color: var(--gold);
+}
+
+body.night .heart,
+body.night .heart::before,
+body.night .heart::after {
+  background: var(--gold);
+  box-shadow: 0 0 35px rgba(207, 176, 91, 0.9);
+}
+
+
+/* Circle glow softer */
+body.night .circle {
+  box-shadow: 0 0 35px rgba(118, 114, 193, 0.7);
+}
+
+/* Headings */
+body.night h1,
+body.night h2,
+body.night .text .big,
+body.night .text .small {
+  color: #ffffff;
+}
+
+/* Slider labels + values */
+body.night label,
+body.night .feelings-board span {
+  color: #ffffff;
+}
+
+/* TEXTAREA */
+body.night textarea {
+  background: #5f5bb0;
+  color: #ffffff;
+}
+
+body.night textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* PARTNER NOTE */
+body.night .partner-note {
+  background: rgba(36, 33, 93, 0.5);
+  border-left: 4px solid #ffffff;
+  color: #ffffff;
+}
 
 /* -------------------------
    COMPATIBILITY STATES
@@ -367,7 +503,22 @@ body.night #particles {
 }
 
 
+/* =========================
+   GOLD ACCENT OVERRIDES
+========================= */
 
+:root {
+  --gold: #cfb05b;
+    --pink: #ff5c8a;
+}  
+
+/* GLOBAL TEXT ACCENT */
+body,
+label,
+span,
+p {
+  color: inherit;
+}
 
 /* -------------------------
    BUTTONS
@@ -375,27 +526,15 @@ body.night #particles {
 button {
   background: var(--pink);
   color: white;
+  color: #24215d !important;
   font-weight: 700;
-  box-shadow: 0 0 12px rgba(255, 92, 138, 0.5);
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 12px rgba(207, 176, 91, 0.5);
 }
 
 button:hover {
-  box-shadow: 0 0 18px rgba(255, 92, 138, 0.8);
+  box-shadow: 0 0 20px rgba(207, 176, 91, 0.8);
 }
-
-.circle {
-  box-shadow: 0 0 40px rgba(255, 92, 138, 0.6);
-}
-
-.partner-note {
-  border-left: 4px solid #b00040;
-}
-
-.compatibility::after {
-  content: " ✦";
-  color: #ff5c8a;
-}
-
 
 /* -------------------------
    HEART (GOLD)
@@ -446,9 +585,8 @@ button:hover {
   color: var(--gold);
 }
 
-
 /* =========================
-   NIGHT MODE (FINAL)
+   NIGHT MODE – GOLD EDITION
 ========================= */
 
 body.night {
@@ -456,7 +594,7 @@ body.night {
   color: #ffffff;
 }
 
-/* Cards */
+/* ALL BLOCKS */
 body.night .since,
 body.night .circle,
 body.night .time-row,
@@ -466,48 +604,44 @@ body.night .partner-card {
   color: #ffffff;
 }
 
-/* Buttons */
-body.night button {
-  background: var(--gold);
-  color: #24215d;
-  box-shadow: 0 0 18px rgba(207, 176, 91, 0.7);
+/* GOLD HIGHLIGHTS */
+body.night .since,
+body.night h2,
+body.night .text .big {
+  text-shadow: 0 0 10px rgba(207, 176, 91, 0.6);
 }
 
-/* Sliders */
-body.night .slider {
-  accent-color: var(--gold);
+/* COMPATIBILITY STATES */
+body.night .compatibility.good {
+  color: #e7ffbe;
 }
 
-/* Heart */
-body.night .heart,
-body.night .heart::before,
-body.night .heart::after {
-  background: var(--gold);
-  box-shadow: 0 0 35px rgba(207, 176, 91, 0.9);
+body.night .compatibility.ok {
+  color: #ffe8a3;
 }
 
-/* Partner note */
+body.night .compatibility.bad {
+  color: var(--gold);
+  font-weight: 900;
+}
+
+/* PARTNER NOTE */
 body.night .partner-note {
   background: rgba(36, 33, 93, 0.55);
-  border-left: 4px solid var(--gold);
   color: #ffffff;
 }
 
-/* Compatibility */
-.compatibility::after {
-  content: " ✦";
-  color: var(--pink); /* DAY */
+/* TEXTAREA */
+body.night textarea {
+  background: #5f5bb0;
+  color: #ffffff;
 }
 
-body.night .compatibility::after {
-  color: var(--gold); /* NIGHT */
+body.night textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
-/* Particles */
-#particles {
-  opacity: 0.12;
-}
-
+/* PARTICLES */
 body.night #particles {
   opacity: 0.35;
 }

@@ -391,5 +391,17 @@ function resetTodayUI() {
   updateHeart();
 }
 
+const dailyTextEl = document.getElementById("daily-text");
+
+function setRandomDailyText() {
+  if (!dailyTextEl) return;
+
+  const randomIndex = Math.floor(Math.random() * dailyTexts.length);
+  dailyTextEl.innerText = dailyTexts[randomIndex];
+}
+
+setRandomDailyText();
+
+
 
 

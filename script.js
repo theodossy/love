@@ -142,7 +142,6 @@ document.getElementById("saveBtn").onclick = async () => {
   const today = new Date().toISOString().split("T")[0];
   const ref = db.collection("days").doc(today);
   const snap = await ref.get();
-triggerParticleBurst();
 
   if (snap.exists && snap.data()[auth.currentUser.uid]) {
     saveStatus.innerText = "Already saved today ❤";
@@ -379,4 +378,5 @@ const dailyTexts = [
   "Does she really like me??",
   "I'm so freaking in loveeeeeeeeeee."
 ];
+
 

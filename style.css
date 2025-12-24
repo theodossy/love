@@ -646,6 +646,24 @@ body.night #particles {
   opacity: 0.35;
 }
 
+/* =========================
+        LOVERS TEXT
+========================= */
+
+
+.daily-text {
+  margin-top: 14px;
+  font-size: 18px;
+  font-style: italic;
+  opacity: 0.85;
+  transition: opacity 0.5s ease;
+}
+
+/* Night mode stays readable */
+body.night .daily-text {
+  color: #ffffff;
+  opacity: 0.9;
+}
 
 
 

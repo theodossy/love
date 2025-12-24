@@ -141,7 +141,8 @@ function setupSliders() {
 document.getElementById("saveBtn").onclick = async () => {
   const today = new Date().toISOString().split("T")[0];
   const ref = db.collection("days").doc(today);
-  const snap = await ref.get();
+  const snap = await ref.get({ source: "server" });
+
 
 if (snap.exists && snap.data()[auth.currentUser.uid]) {
   saveStatus.innerText = "Already saved today ❤";
@@ -167,7 +168,11 @@ if (snap.exists && snap.data()[auth.currentUser.uid]) {
 function loadToday(uid) {
   const today = new Date().toISOString().split("T")[0];
 
-  db.collection("days").doc(today).onSnapshot(doc => {
+ db.collection("days").doc(today).onSnapshot(
+  { includeMetadataChanges: true },
+  doc => {
+    if (doc.metadata.fromCache) return;
+
 
     // 🚨 NEW DAY → RESET EVERYTHING
     if (!doc.exists) {
@@ -385,5 +390,6 @@ function resetTodayUI() {
 
   updateHeart();
 }
+
 
 

@@ -143,10 +143,12 @@ document.getElementById("saveBtn").onclick = async () => {
   const ref = db.collection("days").doc(today);
   const snap = await ref.get();
 
-  if (snap.exists && snap.data()[auth.currentUser.uid]) {
-    saveStatus.innerText = "Already saved today ❤";
-    return;
-  }
+if (snap.exists && snap.data()[auth.currentUser.uid]) {
+  saveStatus.innerText = "Already saved today ❤";
+  saveStatus.style.opacity = 1;
+  return;
+}
+
 
   await ref.set({
     [auth.currentUser.uid]: {
@@ -166,11 +168,17 @@ function loadToday(uid) {
   const today = new Date().toISOString().split("T")[0];
 
   db.collection("days").doc(today).onSnapshot(doc => {
-    if (!doc.exists) return;
+
+    // 🚨 NEW DAY → RESET EVERYTHING
+    if (!doc.exists) {
+      resetTodayUI();
+      return;
+    }
 
     const data = doc.data();
     const users = Object.keys(data);
 
+    // LOAD YOUR DATA
     if (data[uid]) {
       loved.value = data[uid].loved;
       energy.value = data[uid].energy;
@@ -182,6 +190,7 @@ function loadToday(uid) {
       document.getElementById("busy-val").innerText = busy.value;
     }
 
+    // PARTNER
     const partnerId = users.find(id => id !== uid);
 
     if (partnerId && data[partnerId]) {
@@ -192,7 +201,10 @@ function loadToday(uid) {
       pLoved.innerText = data[partnerId].loved;
       pEnergy.innerText = data[partnerId].energy;
       pBusy.innerText = data[partnerId].busy;
-      pNote.innerText = data[partnerId].note ? `“${data[partnerId].note}”` : "";
+      pNote.innerText = data[partnerId].note
+        ? `“${data[partnerId].note}”`
+        : "";
+
       partnerTimer.innerText = timeSince(data[partnerId].time);
     }
 
@@ -201,34 +213,6 @@ function loadToday(uid) {
   });
 }
 
-// COMPATIBILITY
-function updateCompatibility(data) {
-  const vals = Object.values(data);
-  if (vals.length < 2) {
-    compatibility.innerText = "";
-    silent.innerText = "One heart is still waiting";
-    return;
-  }
-
-  silent.innerText = "";
-
-  const score =
-    Math.abs(vals[0].loved - vals[1].loved) * 1.6 +
-    Math.abs(vals[0].energy - vals[1].energy) * 1.1 +
-    Math.abs(vals[0].busy - vals[1].busy) * 0.8;
-
-  compatibility.innerText =
-    score <= 3 ? "Perfectly in sync" :
-    score <= 7 ? "Doing okay — stay close" :
-    "One of you needs care";
-}
-
-// HEART
-function updateHeart() {
-  const avg = Number(loved.value);
-  heart.style.animationDuration = `${2 - avg * 0.12}s`;
-  heart.style.boxShadow = avg > 7 ? "0 0 30px #ff5c8a" : "none";
-}
 
 /* ------------------------
    DARK / LIGHT MODE TIME
@@ -378,5 +362,28 @@ const dailyTexts = [
   "Does she really like me??",
   "I'm so freaking in loveeeeeeeeeee."
 ];
+
+function resetTodayUI() {
+  loved.value = 5;
+  energy.value = 5;
+  busy.value = 5;
+  note.value = "";
+
+  document.getElementById("loved-val").innerText = "5";
+  document.getElementById("energy-val").innerText = "5";
+  document.getElementById("busy-val").innerText = "5";
+
+  saveStatus.innerText = "";
+  compatibility.innerText = "";
+  silent.innerText = "One heart is still waiting";
+
+  // Partner reset
+  partnerCard.classList.add("blurred");
+  partnerWait.classList.remove("hidden");
+  partnerData.classList.add("hidden");
+  partnerTimer.innerText = "";
+
+  updateHeart();
+}
 
 

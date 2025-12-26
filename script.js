@@ -123,7 +123,8 @@ function startApp(uid) {
   setInterval(timeUntilMidnight, 1000);
   setupSliders();
   loadToday(uid);
-  setRandomDailyText();
+  loadDailyTexts();
+
 
  
 
@@ -309,62 +310,6 @@ drawParticles();
 
 
 
-const dailyTexts = [
-  "She hates salad...",
-  "She does like dark red :D",
-  "She always edits a typo instead of rewriting the whole word.",
-  "She thinks my \"good girl\" joke is annoying :/",
-  "She always visibly moves her tongue in her mouth when she's mad at me.",
-  "Her hands are so prettyyyyyyyyyyyyyyyy.",
-  "Cold hands. Warm hands. We were meant to be together.",
-  "She always worries about her hair not being smooth enough.",
-  "She likes her finger in my butt..",
-  "She doesn't really have many turn-ons.",
-  "She hates the French language.",
-  "Brooo, she hasn't bitten me in ages.",
-  "She thinks she can beat me xD",
-  "She's so gorgeous when she sings.",
-  "At first, I was really shy to talk to her...",
-  "She will be my wife one day.",
-  "I melt at her reaction when she sees babies.",
-  "A 20 RON tea and a pigeon poop.",
-  "Quite a competitive lady..",
-  "She is always right.",
-  "She always appreciates my red roses.",
-  "I sometimes think I'm not good enough for her.",
-  "You're mine.",
-  "Let's get married.",
-  "A magical orange monastery..",
-  "I'd kinda wanna bite her.",
-  "Strong lady.",
-  "Clever lady.",
-  "My personal therapist.",
-  "I'd rather go blind than cheat on you.",
-  "SpongeBob in pajamas.",
-  "The raisin cookies 🫠",
-  "Best night in Rome.",
-  "Silly goose.",
-  "Hey, don't forget to smile today!",
-  "I don't know how you still bear me...",
-  "Please don't leave me.",
-  "I LOVE YOUUUUUUUUUUU.",
-  "Hey baby girl 😏",
-  "Kinda wife material, not gonna lie.",
-  "I saw her pay her sister to clean her desk.",
-  "I actually drove a tank over her once :D",
-  "Does she really like me??",
-  "I'm so freaking in loveeeeeeeeeee."
-];
-
-function setRandomDailyText() {
-  const el = document.getElementById("daily-text");
-  if (!el) return;
-
-  const randomIndex = Math.floor(Math.random() * dailyTexts.length);
-  el.innerText = dailyTexts[randomIndex];
-}
-
-
 function resetTodayUI() {
   loved.value = 5;
   energy.value = 5;
@@ -388,16 +333,33 @@ function resetTodayUI() {
   updateHeart();
 }
 
-const dailyTextEl = document.getElementById("daily-text");
 
-function setRandomDailyText() {
-  if (!dailyTextEl) return;
+// =====================
+// RESET TODAY UI
+// =====================
+ async function loadDailyTexts() {
+  try {
+    const response = await fetch("daily-texts.txt", { cache: "no-store" });
+    const text = await response.text();
 
-  const randomIndex = Math.floor(Math.random() * dailyTexts.length);
-  dailyTextEl.innerText = dailyTexts[randomIndex];
+    const lines = text
+      .split("\n")
+      .map(l => l.trim())
+      .filter(l => l.length > 0);
+
+    if (!lines.length) return;
+
+    const randomIndex = Math.floor(Math.random() * lines.length);
+    const el = document.getElementById("daily-text");
+    if (el) el.innerText = lines[randomIndex];
+
+  } catch (err) {
+    console.error("Failed to load daily texts:", err);
+  }
 }
 
-setRandomDailyText();
+
+
 
 
 

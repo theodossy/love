@@ -353,7 +353,38 @@ const dailyTexts = [
   "I saw her pay her sister to clean her desk.",
   "I actually drove a tank over her once :D",
   "Does she really like me??",
-  "I'm so freaking in loveeeeeeeeeee."
+  "I'm so freaking in loveeeeeeeeeee.""An overpriced ice skate with blue glasses.",
+  "A broken bed and kiss marks.",
+  "I find it cute when she puts her lip gloss on.",
+  "Red or blue polish actually looks so amazing on her.",
+  "I'll teach you how to ski. I promise.",
+  "She always beats me before taking a picture.",
+  "She says I have a dinosaur head when I have short hair.",
+  "When I'm chilling in her lap, I cannot help but fall more and more in love.",
+  "She sometimes holds me like a baby. I feel like a baby.",
+  "A cube and some pretzels.",
+  "Some wet feet and a broken snowman.",
+  "A bloodied guitar and the first notes.",
+  "Pachka sigaret.",
+  "A Bounty and a broken whiskey glass.",
+  "A twelve-stringed guitar and too many Golf 4 TDI 1.9s.",
+  "In Your Eyes – Grimus",
+  "A climbing gym and a pair of useless hands.",
+  "A −3° night and a long hug.",
+  "Third home visit and a baby's pee.",
+  "A Roblox game and an ECDL exam.",
+  "I think fire is the main thing that united us.",
+  "And she was shy to look me in the eyes.",
+  "She wants our kitchen to be full of her drawings. We agreed that I'll choose the colors.",
+  "She never remembers her password; neither do I.",
+  "Her mood swings are honestly exciting.",
+  "And then I told her my biggest secret. Now I am tied to her :)",
+  "She's only mine, and mine only.",
+  "Kinda hot when she's dominant and has her hair tied.",
+  "We have something special here that I care to keep safe.",
+  "I'd choose you over a brand-new camera.",
+  "Yes, I sometimes ragebait you because you also look hot when you're mad 😁",
+  "I am obsessed with you and depressed without you."
 ];
 
 function setRandomDailyText() {
@@ -398,6 +429,7 @@ function setRandomDailyText() {
 }
 
 setRandomDailyText();
+
 
 
 

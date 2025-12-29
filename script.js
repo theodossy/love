@@ -115,11 +115,23 @@ document.getElementById("loginBtn").onclick = () => {
 
 auth.onAuthStateChanged(user => {
   if (!user) return;
+
   loginScreen.style.display = "none";
   mainContent.classList.remove("hidden");
   startApp(user.uid);
-  enableNotifications(user.uid);
+
+  if (swRegistration) {
+    enableNotifications(user.uid);
+  } else {
+    const interval = setInterval(() => {
+      if (swRegistration) {
+        clearInterval(interval);
+        enableNotifications(user.uid);
+      }
+    }, 200);
+  }
 });
+
 
 // COUNTER
 function updateCounter() {
@@ -183,8 +195,7 @@ function startApp(uid) {
   setupSliders();
   loadToday(uid);
   loadDailyTexts();
-requestNotificationPermission(uid);
-    enableNotifications(uid);
+
 
 
 
@@ -422,6 +433,7 @@ function resetTodayUI() {
     console.error("Failed to load daily texts:", err);
   }
 }
+
 
 
 

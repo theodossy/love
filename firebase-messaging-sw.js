@@ -12,11 +12,13 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(payload => {
-  self.registration.showNotification(
-    payload.notification.title,
-    {
-      body: payload.notification.body,
-      icon: "/favicon.png"
-    }
-  );
+  console.log("[SW] Background message", payload);
+
+  const title = payload.notification?.title || "💖 Love";
+  const options = {
+    body: payload.notification?.body || "Your partner is thinking of you",
+    icon: "/love/icon-192.png"
+  };
+
+  self.registration.showNotification(title, options);
 });

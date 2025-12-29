@@ -14,11 +14,19 @@ const db = firebase.firestore();
 
 let messaging = null;
 
-if (firebase.messaging && "serviceWorker" in navigator) {
+try {
   messaging = firebase.messaging();
-} else {
-  console.warn("Firebase Messaging not supported in this browser");
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.ready.then(registration => {
+      messaging.useServiceWorker(registration);
+    });
+  }
+
+} catch (e) {
+  console.warn("Firebase Messaging not available");
 }
+
 
 
 
@@ -433,6 +441,7 @@ async function requestNotificationPermission(uid) {
     console.error("Notification error:", err);
   }
 }
+
 
 
 

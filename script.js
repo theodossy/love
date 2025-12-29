@@ -17,11 +17,7 @@ let messaging = null;
 try {
   messaging = firebase.messaging();
 
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.ready.then(registration => {
-      messaging.useServiceWorker(registration);
-    });
-  }
+ 
 
 } catch (e) {
   console.warn("Firebase Messaging not available");
@@ -31,27 +27,30 @@ try {
 
 
 async function enableNotifications(uid) {
-  if (!messaging) return;
+  if (!messaging || !swRegistration) return;
+
   try {
     const permission = await Notification.requestPermission();
     if (permission !== "granted") return;
 
     const token = await messaging.getToken({
-      vapidKey: "BFYZYGBt-GAc4iQdm423YyJqFK5Kqve4LLz7r_6sfEc_mD9Ws_1oSz1WiYKESMQ-2TFUbBh2X_BMMHtIeeqykXo"
+      vapidKey: "BFYZYGBt-GAc4iQdm423YyJqFK5Kqve4LLz7r_6sfEc_mD9Ws_1oSz1WiYKESMQ-2TFUbBh2X_BMMHtIeeqykXo",
+      serviceWorkerRegistration: swRegistration
     });
 
     if (!token) return;
 
-    await db.collection("users").doc(uid).set({
-      fcmToken: token
-    }, { merge: true });
+    await db.collection("pushTokens").doc(uid).set({
+      token,
+      updated: firebase.firestore.FieldValue.serverTimestamp()
+    });
 
-    console.log("🔔 Notifications enabled");
+    console.log("🔔 Push notifications enabled");
+
   } catch (err) {
     console.error("❌ Notification error:", err);
   }
 }
-
 
 
 function updateHeart() {}
@@ -424,10 +423,10 @@ async function requestNotificationPermission(uid) {
     const permission = await Notification.requestPermission();
     if (permission !== "granted") return;
 
-    const token = await messaging.getToken({
-      vapidKey: "BFYZYGBt-GAc4iQdm423YyJqFK5Kqve4LLz7r_6sfEc_mD9Ws_1oSz1WiYKESMQ-2TFUbBh2X_BMMHtIeeqykXo"
-    });
-
+   const token = await messaging.getToken({
+  vapidKey: "BFYZYGBt-GAc4iQdm423YyJqFK5Kqve4LLz7r_6sfEc_mD9Ws_1oSz1WiYKESMQ-2TFUbBh2X_BMMHtIeeqykXo",
+  serviceWorkerRegistration: swRegistration
+});
     if (!token) return;
 
     await db.collection("pushTokens").doc(uid).set({
@@ -441,6 +440,7 @@ async function requestNotificationPermission(uid) {
     console.error("Notification error:", err);
   }
 }
+
 
 
 

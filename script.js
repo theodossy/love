@@ -184,6 +184,7 @@ function startApp(uid) {
   loadToday(uid);
   loadDailyTexts();
 requestNotificationPermission(uid);
+    enableNotifications(uid);
 
 
 
@@ -424,26 +425,7 @@ function resetTodayUI() {
 
 
 
-async function requestNotificationPermission(uid) {
-  await enableNotifications(uid);
 
-   const token = await messaging.getToken({
-  vapidKey: "BFYZYGBt-GAc4iQdm423YyJqFK5Kqve4LLz7r_6sfEc_mD9Ws_1oSz1WiYKESMQ-2TFUbBh2X_BMMHtIeeqykXo",
-  serviceWorkerRegistration: swRegistration
-});
-    if (!token) return;
-
-    await db.collection("pushTokens").doc(uid).set({
-      token,
-      updated: firebase.firestore.FieldValue.serverTimestamp()
-    });
-
-    console.log("Push notifications enabled");
-
-  } catch (err) {
-    console.error("Notification error:", err);
-  }
-}
 
 
 

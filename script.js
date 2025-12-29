@@ -44,6 +44,13 @@ async function enableNotifications(uid) {
 function updateHeart() {}
 function updateCompatibility() {}
 
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/firebase-messaging-sw.js")
+    .then(() => console.log("✅ Service worker registered"))
+    .catch(err => console.error("❌ SW error", err));
+}
+
+
 // DOM
 const loginScreen = document.getElementById("login-screen");
 const mainContent = document.getElementById("main-content");
@@ -423,8 +430,8 @@ async function requestNotificationPermission(uid) {
 }
 
 
-function updateHeart() {}
-function updateCompatibility() {}
+
+
 
 
 

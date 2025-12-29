@@ -45,7 +45,7 @@ function updateHeart() {}
 function updateCompatibility() {}
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/firebase-messaging-sw.js")
+  navigator.serviceWorker.register("/love/firebase-messaging-sw.js")
     .then(() => console.log("✅ Service worker registered"))
     .catch(err => console.error("❌ SW error", err));
 }
@@ -428,6 +428,7 @@ async function requestNotificationPermission(uid) {
     console.error("Notification error:", err);
   }
 }
+
 
 
 

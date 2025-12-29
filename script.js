@@ -18,6 +18,7 @@ try {
 
 
 async function enableNotifications(uid) {
+  if (!messaging) return;
   try {
     const permission = await Notification.requestPermission();
     if (permission !== "granted") return;
@@ -39,14 +40,6 @@ async function enableNotifications(uid) {
 }
 
 
-db.enablePersistence().catch(() => {});
-
-let messaging = null;
-try {
-  messaging = firebase.messaging();
-} catch (e) {
-  console.warn("Messaging disabled");
-}
 
 function updateHeart() {}
 function updateCompatibility() {}
@@ -406,6 +399,7 @@ function resetTodayUI() {
 
 
 async function requestNotificationPermission(uid) {
+  if (!messaging) return;
   try {
     const permission = await Notification.requestPermission();
     if (permission !== "granted") return;
@@ -431,6 +425,7 @@ async function requestNotificationPermission(uid) {
 
 function updateHeart() {}
 function updateCompatibility() {}
+
 
 
 

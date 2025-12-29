@@ -7,7 +7,31 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-const db = firebase.firestore();
+const db = firebase.firestore(); 
+
+const messaging = firebase.messaging();
+
+async function enableNotifications(uid) {
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") return;
+
+    const token = await messaging.getToken({
+      vapidKey: "BFYZYGBt-GAc4iQdm423YyJqFK5Kqve4LLz7r_6sfEc_mD9Ws_1oSz1WiYKESMQ-2TFUbBh2X_BMMHtIeeqykXo"
+    });
+
+    if (!token) return;
+
+    await db.collection("users").doc(uid).set({
+      fcmToken: token
+    }, { merge: true });
+
+    console.log("🔔 Notifications enabled");
+  } catch (err) {
+    console.error("❌ Notification error:", err);
+  }
+}
+
 
 db.enablePersistence().catch(() => {});
 
@@ -60,6 +84,7 @@ auth.onAuthStateChanged(user => {
   loginScreen.style.display = "none";
   mainContent.classList.remove("hidden");
   startApp(user.uid);
+  enableNotifications(user.uid);
 });
 
 // COUNTER
@@ -357,6 +382,7 @@ function resetTodayUI() {
     console.error("Failed to load daily texts:", err);
   }
 }
+
 
 
 

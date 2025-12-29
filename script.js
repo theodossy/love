@@ -1,3 +1,5 @@
+let swRegistration = null;
+
 // FIREBASE CONFIG
 const firebaseConfig = {
 
@@ -53,12 +55,16 @@ async function enableNotifications(uid) {
 }
 
 
+
 function updateHeart() {}
 function updateCompatibility() {}
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/love/firebase-messaging-sw.js")
-    .then(() => console.log("✅ Service worker registered"))
+    .then(reg => {
+      swRegistration = reg;
+      console.log("✅ Service worker registered");
+    })
     .catch(err => console.error("❌ SW error", err));
 }
 
@@ -417,11 +423,9 @@ function resetTodayUI() {
 }
 
 
+
 async function requestNotificationPermission(uid) {
-  if (!messaging) return;
-  try {
-    const permission = await Notification.requestPermission();
-    if (permission !== "granted") return;
+  await enableNotifications(uid);
 
    const token = await messaging.getToken({
   vapidKey: "BFYZYGBt-GAc4iQdm423YyJqFK5Kqve4LLz7r_6sfEc_mD9Ws_1oSz1WiYKESMQ-2TFUbBh2X_BMMHtIeeqykXo",
@@ -440,6 +444,7 @@ async function requestNotificationPermission(uid) {
     console.error("Notification error:", err);
   }
 }
+
 
 
 

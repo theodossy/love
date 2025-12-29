@@ -149,6 +149,8 @@ function startApp(uid) {
   setupSliders();
   loadToday(uid);
   loadDailyTexts();
+requestNotificationPermission(uid);
+
 
 
  
@@ -179,17 +181,20 @@ if (snap.exists && snap.data()[auth.currentUser.uid]) {
 }
 
 
-  await ref.set({
-    [auth.currentUser.uid]: {
-      loved: loved.value,
-      energy: energy.value,
-      busy: busy.value,
-      note: note.value,
-      time: firebase.firestore.FieldValue.serverTimestamp()
-    }
-  }, { merge: true });
 
-  saveStatus.innerText = "Saved ❤";
+
+ await ref.set({
+  [auth.currentUser.uid]: {
+    loved: loved.value,
+    energy: energy.value,
+    busy: busy.value,
+    note: note.value,
+    time: firebase.firestore.FieldValue.serverTimestamp()
+  }
+}, { merge: true });
+
+saveStatus.innerText = "Saved ❤";
+
 };
 
 // LOAD + PARTNER FIX
@@ -382,6 +387,32 @@ function resetTodayUI() {
     console.error("Failed to load daily texts:", err);
   }
 }
+
+
+async function requestNotificationPermission(uid) {
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") return;
+
+    const token = await messaging.getToken({
+      vapidKey: "BFYZYGBt-GAc4iQdm423YyJqFK5Kqve4LLz7r_6sfEc_mD9Ws_1oSz1WiYKESMQ-2TFUbBh2X_BMMHtIeeqykXo"
+    });
+
+    if (!token) return;
+
+    await db.collection("pushTokens").doc(uid).set({
+      token,
+      updated: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    console.log("Push notifications enabled");
+
+  } catch (err) {
+    console.error("Notification error:", err);
+  }
+}
+
+
 
 
 

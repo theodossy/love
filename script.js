@@ -1,9 +1,11 @@
 // FIREBASE CONFIG
 const firebaseConfig = {
- apiKey: "AIzaSyDH8rZPpwtVzsBJSl_TM2oLJhR22Bwpb0I",
+
+  apiKey: "AIzaSyDH8rZPpwtVzsBJSl_TM2oLJhR22Bwpb0I",
   authDomain: "love-2-697ee.firebaseapp.com",
   projectId: "love-2-697ee",
-  messagingSenderId: "557984264400"
+  messagingSenderId: "557984264400",
+  appId: "1:557984264400:web:aa4b1f5cfde5fa757c2ed5"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -431,6 +433,7 @@ async function requestNotificationPermission(uid) {
     console.error("Notification error:", err);
   }
 }
+
 
 
 

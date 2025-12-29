@@ -9,7 +9,13 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore(); 
 
-const messaging = firebase.messaging();
+let messaging = null;
+try {
+  messaging = firebase.messaging();
+} catch (e) {
+  console.warn("Firebase Messaging not available");
+}
+
 
 async function enableNotifications(uid) {
   try {
@@ -34,6 +40,16 @@ async function enableNotifications(uid) {
 
 
 db.enablePersistence().catch(() => {});
+
+let messaging = null;
+try {
+  messaging = firebase.messaging();
+} catch (e) {
+  console.warn("Messaging disabled");
+}
+
+function updateHeart() {}
+function updateCompatibility() {}
 
 // DOM
 const loginScreen = document.getElementById("login-screen");
@@ -412,6 +428,9 @@ async function requestNotificationPermission(uid) {
   }
 }
 
+
+function updateHeart() {}
+function updateCompatibility() {}
 
 
 

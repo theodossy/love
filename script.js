@@ -1,4 +1,7 @@
 let swRegistration = null;
+let currentDayKey = null;
+let unsubscribeToday = null;
+
 
 // FIREBASE CONFIG
 const firebaseConfig = {
@@ -36,7 +39,7 @@ async function enableNotifications(uid) {
     if (permission !== "granted") return;
 
     const token = await messaging.getToken({
-      vapidKey: "BFYZYGBt-GAc4iQdm423YyJqFK5Kqve4LLz7r_6sfEc_mD9Ws_1oSz1WiYKESMQ-2TFUbBh2X_BMMHtIeeqykXo",
+      vapidKey: "BGl45A7WlIza6qjT1A0vaujL9ihZ1cCM8kKM3jBSbRcsC66msGlotMnWSUaFyUjR9Ph0mpfzWJ7DHq7jXDgrMXs",
       serviceWorkerRegistration: swRegistration
     });
 
@@ -60,7 +63,7 @@ function updateHeart() {}
 function updateCompatibility() {}
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/love/firebase-messaging-sw.js")
+  navigator.serviceWorker.register("/public/firebase-messaging-sw.js")
     .then(reg => {
       swRegistration = reg;
       console.log("✅ Service worker registered");
@@ -131,6 +134,11 @@ auth.onAuthStateChanged(user => {
     }, 200);
   }
 });
+function watchDayChange(uid) {
+  setInterval(() => {
+    loadToday(uid);
+  }, 30 * 1000); // check every 30 seconds
+}
 
 
 // COUNTER
@@ -193,8 +201,11 @@ function startApp(uid) {
   setInterval(updateCounter, 1000);
   setInterval(timeUntilMidnight, 1000);
   setupSliders();
-  loadToday(uid);
   loadDailyTexts();
+  loadToday(uid);
+  watchDayChange(uid);
+}
+
 
 
 
@@ -245,34 +256,64 @@ saveStatus.innerText = "Saved ❤";
 
 // LOAD + PARTNER FIX
 function loadToday(uid) {
-  const today = new Date().toISOString().split("T")[0];
+  const newDayKey = new Date().toISOString().split("T")[0];
 
- db.collection("days").doc(today).onSnapshot(
-  { includeMetadataChanges: true },
-  doc => {
-    if (doc.metadata.fromCache) return;
+  // If same day, do nothing
+  if (newDayKey === currentDayKey) return;
 
+  // Unsubscribe from previous day
+  if (unsubscribeToday) {
+    unsubscribeToday();
+    unsubscribeToday = null;
+  }
 
-    // 🚨 NEW DAY → RESET EVERYTHING
-    if (!doc.exists) {
-      resetTodayUI();
-      return;
-    }
+  currentDayKey = newDayKey;
+  resetTodayUI();
 
-    const data = doc.data();
-    const users = Object.keys(data);
+  unsubscribeToday = db
+    .collection("days")
+    .doc(currentDayKey)
+    .onSnapshot({ includeMetadataChanges: true }, doc => {
+      if (doc.metadata.fromCache) return;
 
-    // LOAD YOUR DATA
-    if (data[uid]) {
-      loved.value = data[uid].loved;
-      energy.value = data[uid].energy;
-      busy.value = data[uid].busy;
-      note.value = data[uid].note;
+      if (!doc.exists) return;
 
-      document.getElementById("loved-val").innerText = loved.value;
-      document.getElementById("energy-val").innerText = energy.value;
-      document.getElementById("busy-val").innerText = busy.value;
-    }
+      const data = doc.data();
+      const users = Object.keys(data);
+
+      // YOUR DATA
+      if (data[uid]) {
+        loved.value = data[uid].loved;
+        energy.value = data[uid].energy;
+        busy.value = data[uid].busy;
+        note.value = data[uid].note;
+
+        document.getElementById("loved-val").innerText = loved.value;
+        document.getElementById("energy-val").innerText = energy.value;
+        document.getElementById("busy-val").innerText = busy.value;
+      }
+
+      // PARTNER
+      const partnerId = users.find(id => id !== uid);
+      if (partnerId && data[partnerId]) {
+        partnerCard.classList.remove("blurred");
+        partnerWait.classList.add("hidden");
+        partnerData.classList.remove("hidden");
+
+        pLoved.innerText = data[partnerId].loved;
+        pEnergy.innerText = data[partnerId].energy;
+        pBusy.innerText = data[partnerId].busy;
+        pNote.innerText = data[partnerId].note
+          ? `“${data[partnerId].note}”`
+          : "";
+
+        partnerTimer.innerText = timeSince(data[partnerId].time);
+      }
+
+      updateCompatibility(data);
+      updateHeart();
+    });
+}
 
     // PARTNER
     const partnerId = users.find(id => id !== uid);

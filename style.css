@@ -666,6 +666,86 @@ body.night .daily-text {
 }
 
 
+/* =========================
+   🎉 ANNIVERSARY MODE 🎉
+========================= */
+
+body.anniversary {
+  background: #720e0e;
+  color: #000000;
+}
+
+/* ALL CARDS / BOXES */
+body.anniversary .since,
+body.anniversary .circle,
+body.anniversary .time-row,
+body.anniversary .feelings-board,
+body.anniversary .partner-card {
+  background: #ffc08d;
+  color: #000000;
+  box-shadow: none;
+}
+
+/* TOGETHER TEXT */
+body.anniversary .text .small,
+body.anniversary .text .big {
+  color: #000000;
+}
+
+/* TIME LABELS */
+body.anniversary .time-row div {
+  color: #000000;
+}
+
+/* TIME NUMBERS (same as background) */
+body.anniversary .time-row span {
+  color: #720e0e;
+}
+
+/* DAILY TEXT */
+body.anniversary .daily-text {
+  color: #ffc08d;
+  opacity: 1;
+}
+
+/* PARTNER TEXT */
+body.anniversary .partner-stat,
+body.anniversary .partner-note,
+body.anniversary .partner-card h2 {
+  color: #000000;
+}
+
+/* SLIDERS */
+body.anniversary .slider {
+  accent-color: #c82727;
+}
+
+/* HEART */
+body.anniversary .heart,
+body.anniversary .heart::before,
+body.anniversary .heart::after {
+  background: #c82727;
+  box-shadow: none;
+}
+
+/* TEXTAREA */
+body.anniversary textarea {
+  background: #ffd8b0;
+  color: #000000;
+}
+
+/* BUTTONS */
+body.anniversary button {
+  background: #c82727;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+/* DISABLE PARTICLES VISUALLY */
+body.anniversary #particles {
+  opacity: 0.15;
+}
+
 
 
 

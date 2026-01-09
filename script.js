@@ -297,14 +297,63 @@ function loadToday(uid) {
   });
 }
 
+/* =========================
+   ANNIVERSARY MODE (22nd)
+   DELETE THIS BLOCK TO REMOVE
+========================= */
+
+let FORCE_ANNIVERSARY_TEST = false; // 🔴 TEST SWITCH (set false later)
+
+function isAnniversaryDay() {
+  const today = new Date();
+  return today.getDate() === 22;
+}
+
+function applyAnniversaryMode() {
+  if (FORCE_ANNIVERSARY_TEST || isAnniversaryDay()) {
+    document.body.classList.add("anniversary");
+    document.body.classList.remove("night"); // override dark mode
+  } else {
+    document.body.classList.remove("anniversary");
+  }
+}
+
+/* 🔘 TEMP TEST BUTTON (EASY DELETE) */
+function addAnniversaryTestButton() {
+  const btn = document.createElement("button");
+  btn.innerText = "🎉 Test Anniversary Mode";
+  btn.style.position = "fixed";
+  btn.style.bottom = "20px";
+  btn.style.right = "20px";
+  btn.style.zIndex = "9999";
+  btn.style.padding = "10px 16px";
+  btn.style.borderRadius = "20px";
+  btn.style.border = "none";
+  btn.style.cursor = "pointer";
+
+  btn.onclick = () => {
+    FORCE_ANNIVERSARY_TEST = !FORCE_ANNIVERSARY_TEST;
+    applyAnniversaryMode();
+  };
+
+  document.body.appendChild(btn);
+}
+
+/* INIT */
+applyAnniversaryMode();
+addAnniversaryTestButton();
+
+/* Re-check every minute */
+setInterval(applyAnniversaryMode, 60 * 1000);
+
 
 /* ------------------------
    DARK / LIGHT MODE TIME
 ------------------------ */
 function applyThemeByTime() {
-  const hour = new Date().getHours();
+  if (document.body.classList.contains("anniversary")) return;
 
-  // Dark mode: 22:00 → 07:00
+  const hour = new Date().getHours();
   if (hour >= 22 || hour < 7) {
     document.body.classList.add("night");
   } else {
@@ -312,8 +361,6 @@ function applyThemeByTime() {
   }
 }
 
-applyThemeByTime();
-setInterval(applyThemeByTime, 60 * 1000); // check every minute
 
 
 /* ------------------------
@@ -433,6 +480,7 @@ function resetTodayUI() {
     console.error("Failed to load daily texts:", err);
   }
 }
+
 
 
 

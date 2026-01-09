@@ -438,21 +438,25 @@ initParticles();
 function drawParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  const night = document.body.classList.contains("night");
+  const isAnniversary = document.body.classList.contains("anniversary");
+const night = document.body.classList.contains("night");
 
   particles.forEach(p => {
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
 
-    ctx.fillStyle = night
-      ? `rgba(207,176,91,${p.alpha})`
-      : `rgba(255,255,255,${p.alpha})`;
+    ctx.fillStyle = isAnniversary
+  ? `rgba(255,215,140,${p.alpha + 0.25})`
+  : night
+    ? `rgba(207,176,91,${p.alpha})`
+    : `rgba(255,255,255,${p.alpha})`;
 
-    ctx.shadowBlur = night ? 18 : 10;
-    ctx.shadowColor = night
-      ? "rgba(207,176,91,0.8)"
-      : "rgba(255,255,255,0.7)";
-
+    ctx.shadowBlur = isAnniversary ? 28 : night ? 18 : 10;
+ctx.shadowColor = isAnniversary
+  ? "rgba(255,215,140,1)"
+  : night
+    ? "rgba(207,176,91,0.8)"
+    : "rgba(255,255,255,0.7)";
     ctx.fill();
 
     p.y += p.speed;

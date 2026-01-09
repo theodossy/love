@@ -1,7 +1,4 @@
 let swRegistration = null;
-let currentDayKey = null;
-let unsubscribeToday = null;
-
 
 // FIREBASE CONFIG
 const firebaseConfig = {
@@ -134,11 +131,6 @@ auth.onAuthStateChanged(user => {
     }, 200);
   }
 });
-function watchDayChange(uid) {
-  setInterval(() => {
-    loadToday(uid);
-  }, 30 * 1000); // check every 30 seconds
-}
 
 
 // COUNTER
@@ -201,11 +193,8 @@ function startApp(uid) {
   setInterval(updateCounter, 1000);
   setInterval(timeUntilMidnight, 1000);
   setupSliders();
-  loadDailyTexts();
   loadToday(uid);
-  watchDayChange(uid);
-}
-
+  loadDailyTexts();
 
 
 
@@ -256,64 +245,34 @@ saveStatus.innerText = "Saved ❤";
 
 // LOAD + PARTNER FIX
 function loadToday(uid) {
-  const newDayKey = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().split("T")[0];
 
-  // If same day, do nothing
-  if (newDayKey === currentDayKey) return;
+ db.collection("days").doc(today).onSnapshot(
+  { includeMetadataChanges: true },
+  doc => {
+    if (doc.metadata.fromCache) return;
 
-  // Unsubscribe from previous day
-  if (unsubscribeToday) {
-    unsubscribeToday();
-    unsubscribeToday = null;
-  }
 
-  currentDayKey = newDayKey;
-  resetTodayUI();
+    // 🚨 NEW DAY → RESET EVERYTHING
+    if (!doc.exists) {
+      resetTodayUI();
+      return;
+    }
 
-  unsubscribeToday = db
-    .collection("days")
-    .doc(currentDayKey)
-    .onSnapshot({ includeMetadataChanges: true }, doc => {
-      if (doc.metadata.fromCache) return;
+    const data = doc.data();
+    const users = Object.keys(data);
 
-      if (!doc.exists) return;
+    // LOAD YOUR DATA
+    if (data[uid]) {
+      loved.value = data[uid].loved;
+      energy.value = data[uid].energy;
+      busy.value = data[uid].busy;
+      note.value = data[uid].note;
 
-      const data = doc.data();
-      const users = Object.keys(data);
-
-      // YOUR DATA
-      if (data[uid]) {
-        loved.value = data[uid].loved;
-        energy.value = data[uid].energy;
-        busy.value = data[uid].busy;
-        note.value = data[uid].note;
-
-        document.getElementById("loved-val").innerText = loved.value;
-        document.getElementById("energy-val").innerText = energy.value;
-        document.getElementById("busy-val").innerText = busy.value;
-      }
-
-      // PARTNER
-      const partnerId = users.find(id => id !== uid);
-      if (partnerId && data[partnerId]) {
-        partnerCard.classList.remove("blurred");
-        partnerWait.classList.add("hidden");
-        partnerData.classList.remove("hidden");
-
-        pLoved.innerText = data[partnerId].loved;
-        pEnergy.innerText = data[partnerId].energy;
-        pBusy.innerText = data[partnerId].busy;
-        pNote.innerText = data[partnerId].note
-          ? `“${data[partnerId].note}”`
-          : "";
-
-        partnerTimer.innerText = timeSince(data[partnerId].time);
-      }
-
-      updateCompatibility(data);
-      updateHeart();
-    });
-}
+      document.getElementById("loved-val").innerText = loved.value;
+      document.getElementById("energy-val").innerText = energy.value;
+      document.getElementById("busy-val").innerText = busy.value;
+    }
 
     // PARTNER
     const partnerId = users.find(id => id !== uid);

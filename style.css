@@ -746,6 +746,13 @@ body.anniversary #particles {
   opacity: 0.15;
 }
 
+/* =========================
+   ANNIVERSARY MODE FIXES
+========================= */
+body.anniversary button {
+  color: #ffc08d !important;
+}
+
 
 
 

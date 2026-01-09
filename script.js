@@ -395,11 +395,12 @@ const particles = [];
 const NORMAL_PARTICLE_COUNT = 60;
 const ANNIVERSARY_PARTICLE_COUNT = 120;
 
-const NORMAL_SPEED_MIN = 0.04;
-const NORMAL_SPEED_MAX = 0.12;
+const NORMAL_SPEED_MIN = 0.12;
+const NORMAL_SPEED_MAX = 0.28;
 
-const ANNIVERSARY_SPEED_MIN = 0.12;
-const ANNIVERSARY_SPEED_MAX = 0.28;
+const ANNIVERSARY_SPEED_MIN = 0.35;
+const ANNIVERSARY_SPEED_MAX = 0.75;
+
 
 
  function createParticle() {
@@ -413,8 +414,8 @@ const ANNIVERSARY_SPEED_MAX = 0.28;
     y: Math.random() * canvas.height,
     r: Math.random() * 1.8 + 0.8,
     speed: Math.random() * (speedMax - speedMin) + speedMin,
-    drift: (Math.random() - 0.5) * 0.06,
-    alpha: Math.random() * 0.5 + 0.4
+    drift: (Math.random() - 0.5) * 0.12,
+    alpha: Math.random() * 0.4 + 0.6
   };
 }
 
@@ -525,6 +526,7 @@ function resetTodayUI() {
     console.error("Failed to load daily texts:", err);
   }
 }
+
 
 
 

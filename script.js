@@ -310,13 +310,23 @@ function isAnniversaryDay() {
 }
 
 function applyAnniversaryMode() {
+  const wasAnniversary = document.body.classList.contains("anniversary");
+
   if (FORCE_ANNIVERSARY_TEST || isAnniversaryDay()) {
     document.body.classList.add("anniversary");
     document.body.classList.remove("night"); // override dark mode
   } else {
     document.body.classList.remove("anniversary");
   }
+
+  const isNowAnniversary = document.body.classList.contains("anniversary");
+
+  // 🔁 Only refresh particles if the mode actually changed
+  if (wasAnniversary !== isNowAnniversary) {
+    refreshCelebrationVisuals();
+  }
 }
+
 
 /* 🔘 TEMP TEST BUTTON (EASY DELETE) */
 function addAnniversaryTestButton() {
@@ -379,21 +389,50 @@ window.addEventListener("resize", resizeCanvas);
 const PARTICLE_COUNT = 60;
 const particles = [];
 
-function createParticle() {
+// =====================
+// ANNIVERSARY PARTICLE MODE
+// =====================
+const NORMAL_PARTICLE_COUNT = 60;
+const ANNIVERSARY_PARTICLE_COUNT = 120;
+
+const NORMAL_SPEED_MIN = 0.04;
+const NORMAL_SPEED_MAX = 0.12;
+
+const ANNIVERSARY_SPEED_MIN = 0.12;
+const ANNIVERSARY_SPEED_MAX = 0.28;
+
+
+ function createParticle() {
+  const isAnniversary = document.body.classList.contains("anniversary");
+
+  const speedMin = isAnniversary ? ANNIVERSARY_SPEED_MIN : NORMAL_SPEED_MIN;
+  const speedMax = isAnniversary ? ANNIVERSARY_SPEED_MAX : NORMAL_SPEED_MAX;
+
   return {
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
     r: Math.random() * 1.8 + 0.8,
-    speed: Math.random() * 0.12 + 0.04,
-    drift: (Math.random() - 0.5) * 0.03,
-    alpha: Math.random() * 0.5 + 0.3
+    speed: Math.random() * (speedMax - speedMin) + speedMin,
+    drift: (Math.random() - 0.5) * 0.06,
+    alpha: Math.random() * 0.5 + 0.4
   };
 }
 
 
-for (let i = 0; i < PARTICLE_COUNT; i++) {
-  particles.push(createParticle());
+function initParticles() {
+  particles.length = 0;
+
+  const count = document.body.classList.contains("anniversary")
+    ? ANNIVERSARY_PARTICLE_COUNT
+    : NORMAL_PARTICLE_COUNT;
+
+  for (let i = 0; i < count; i++) {
+    particles.push(createParticle());
+  }
 }
+
+initParticles();
+
 
 function drawParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -430,6 +469,12 @@ function drawParticles() {
 
 drawParticles();
 
+// =====================
+// REFRESH PARTICLES (ANNIVERSARY TOGGLE)
+// =====================
+function refreshCelebrationVisuals() {
+  initParticles();
+}
 
 
 
@@ -480,6 +525,7 @@ function resetTodayUI() {
     console.error("Failed to load daily texts:", err);
   }
 }
+
 
 
 

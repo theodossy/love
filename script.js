@@ -328,33 +328,7 @@ function applyAnniversaryMode() {
 }
 
 
-/* 🔘 TEMP TEST BUTTON (EASY DELETE) */
-function addAnniversaryTestButton() {
-  const btn = document.createElement("button");
-  btn.innerText = "🎉 Test Anniversary Mode";
-  btn.style.position = "fixed";
-  btn.style.bottom = "20px";
-  btn.style.right = "20px";
-  btn.style.zIndex = "9999";
-  btn.style.padding = "10px 16px";
-  btn.style.borderRadius = "20px";
-  btn.style.border = "none";
-  btn.style.cursor = "pointer";
 
-  btn.onclick = () => {
-    FORCE_ANNIVERSARY_TEST = !FORCE_ANNIVERSARY_TEST;
-    applyAnniversaryMode();
-  };
-
-  document.body.appendChild(btn);
-}
-
-/* INIT */
-applyAnniversaryMode();
-addAnniversaryTestButton();
-
-/* Re-check every minute */
-setInterval(applyAnniversaryMode, 60 * 1000);
 
 
 /* ------------------------
@@ -530,6 +504,7 @@ function resetTodayUI() {
     console.error("Failed to load daily texts:", err);
   }
 }
+
 
 
 

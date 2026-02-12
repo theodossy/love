@@ -19,7 +19,20 @@ let messaging = null;
 try {
   messaging = firebase.messaging();
 
- 
+ if (messaging) {
+  messaging.onMessage(payload => {
+    console.log("📩 Foreground message:", payload);
+
+    const title = payload.notification?.title || "💖 Love";
+    const body = payload.notification?.body || "Your partner is thinking of you";
+
+    new Notification(title, {
+      body: body,
+      icon: "favicon.png"
+    });
+  });
+}
+
 
 } catch (e) {
   console.warn("Firebase Messaging not available");
@@ -59,14 +72,16 @@ async function enableNotifications(uid) {
 function updateHeart() {}
 function updateCompatibility() {}
 
+
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/public/firebase-messaging-sw.js")
+  navigator.serviceWorker.register("/firebase-messaging-sw.js")
     .then(reg => {
       swRegistration = reg;
       console.log("✅ Service worker registered");
     })
     .catch(err => console.error("❌ SW error", err));
 }
+
 
 
 // DOM
@@ -504,6 +519,7 @@ function resetTodayUI() {
     console.error("Failed to load daily texts:", err);
   }
 }
+
 
 
 
